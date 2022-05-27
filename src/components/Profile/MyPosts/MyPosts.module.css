@@ -1,0 +1,17 @@
+.content {
+    display: grid;
+    grid-area: content;
+    background-color: rgba(238,238,238,1);
+    place-content: center;
+    border-radius: 35px;
+
+}
+
+.profileImg {
+    margin: 10px;
+    height: 400px;
+}
+
+.item {
+    color: greenyellow;
+}
