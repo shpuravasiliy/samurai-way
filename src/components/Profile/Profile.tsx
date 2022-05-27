@@ -16,7 +16,7 @@ const Profile = () => {
                 <div>
                     ava + description
                 </div>
-                <MyPosts/>
+                <MyPosts />
             </div>
         </div>
     );
