@@ -1,0 +1,12 @@
+.content {
+    display: grid;
+    grid-area: content;
+    background-color: aliceblue;
+    place-content: center;
+    border-radius: 35px;
+
+}
+
+.profile-img {
+    margin: 10px;
+}
