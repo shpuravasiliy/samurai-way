@@ -1,12 +1,16 @@
 .content {
     display: grid;
     grid-area: content;
-    background-color: aliceblue;
+    background-color: rgba(238,238,238,1);
     place-content: center;
     border-radius: 35px;
 
 }
 
-.profile-img {
+.profileImg {
     margin: 10px;
+}
+
+.item {
+    color: greenyellow;
 }
