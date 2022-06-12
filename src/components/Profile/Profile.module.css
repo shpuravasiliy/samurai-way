@@ -6,7 +6,12 @@
 /*    border-radius: 35px;*/
 /*}*/
 
-.profileImg {
-    margin: 10px;
+.profile {
+    display: grid;
+}
+
+.header {
+    /*margin: 10px;*/
+    justify-content: center;
     height: 400px;
 }

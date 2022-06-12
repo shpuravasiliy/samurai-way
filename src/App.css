@@ -1,5 +1,5 @@
 .placeholder {
-    background-color: darkgray;
+    background-color: #a9a9a9;
     /*margin: 100px 100px;*/
     padding: 0 0 100px 0;
 }
@@ -7,7 +7,7 @@
 .app-wrapper {
     margin: 0 auto;
     display: grid;
-    width: 1200px;
+    width: 85%;
     grid-template-areas:
     "header header"
     "nav content";
@@ -20,7 +20,7 @@
     display: grid;
     grid-area: content;
     background-color: rgba(238,238,238,1);
-    place-content: center;
+    /*justify-content: stretch;*/
     border-radius: 35px;
-    padding: 0 0 50px 0;
+    padding: 25px;
 }
