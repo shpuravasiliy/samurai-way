@@ -1,18 +1,29 @@
-import React from 'react';
+import React, {ChangeEvent, useState} from 'react';
 import s from './MyPosts.module.css';
-import Post from './Post/Post';
+import Post, {PostPropsType} from './Post/Post';
 
-export type PostsPropsType = {
-    postsData: PostsType[]
-}
-type PostsType = {
-    id: string
-    message: string
-    likesCount: number
+export type MyPostsPropsType = {
+    posts: PostPropsType[]
+    // addPost: (message: string) => void
 }
 
-const MyPosts: React.FC<PostsPropsType> = (props) => {
-    const viewPosts = props.postsData.map(p => <Post message={p.message} likeCount={p.likesCount}/>);
+const MyPosts: React.FC<MyPostsPropsType> = (props) => {
+    // const [message, setMessage] = useState<string>('');
+    // const onChangeHandler = (e: ChangeEvent<HTMLTextAreaElement>) => {
+    //   setMessage(e.currentTarget.value);
+    // }
+    // const onClickHandler = () => {
+    //     if (!message.trim()) {
+    //         setMessage('');
+    //         return;
+    //     }
+    //   else {
+    //         props.addPost(message);
+    //         setMessage('')
+    //     }
+    // }
+
+    const viewPosts = props.posts.map(p => <Post key={p.id} id={p.id} message={p.message} likesCount={p.likesCount}/>);
 
     return (
         <div>

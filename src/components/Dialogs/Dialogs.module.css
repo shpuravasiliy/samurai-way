@@ -1,7 +1,6 @@
 .dialogs {
     display: grid;
     grid-template-columns: 2fr 10fr;
-    /*justify-self: auto;*/
 }
 
 .dialogsItems {
@@ -9,11 +8,20 @@
 }
 
 .dialogsItems .active {
-color: gold;
+    color: gold;
 }
 
 .dialogsItems .dialog {
+    padding-bottom: 15px;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    align-items: center;
 
+}
+
+.dialog img {
+    /*display: inline;*/
+    width: 50px;
 }
 
 .messages {

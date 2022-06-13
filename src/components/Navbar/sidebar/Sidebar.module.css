@@ -1,0 +1,35 @@
+.sidebar {
+    justify-content: center;
+}
+
+.header {
+    text-align: center;
+}
+
+.friends {
+    width: 80px;
+    display: flex;
+    flex-direction: row;
+    /*justify-content:space-around;*/
+    font-size: 16px;
+    margin: 5px;
+}
+
+.friend {
+    width: 80px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    font-size: 16px;
+    margin: 5px;
+}
+
+.friend img {
+    height: 50px;
+    width: 50px;
+    border-radius: 25px;
+}
+
+.friendName {
+
+}
