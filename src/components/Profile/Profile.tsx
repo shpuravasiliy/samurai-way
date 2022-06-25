@@ -17,7 +17,7 @@ const Profile: React.FC<StateProfileType> = (props) => {
     return (
         <div className={s.profile}>
             <ProfileInfo/>
-            <MyPosts posts={props.state.myPosts.posts}/>
+            <MyPosts {...props.state.myPosts}/>
         </div>
     );
 };

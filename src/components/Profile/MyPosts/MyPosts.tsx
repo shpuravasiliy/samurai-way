@@ -1,10 +1,12 @@
-import React, {ChangeEvent, useState} from 'react';
+import React, {ChangeEvent} from 'react';
 import s from './MyPosts.module.css';
 import Post, {PostPropsType} from './Post/Post';
 
 export type MyPostsPropsType = {
     posts: PostPropsType[]
-    // addPost: (message: string) => void
+    newMessage: string
+    addPost: () => void
+    onChange: (message: string) => void
 }
 
 const MyPosts: React.FC<MyPostsPropsType> = (props) => {
@@ -22,18 +24,35 @@ const MyPosts: React.FC<MyPostsPropsType> = (props) => {
     //         setMessage('')
     //     }
     // }
+    // let newPostElement = React.createRef<HTMLTextAreaElement>();
 
-    const viewPosts = props.posts.map(p => <Post key={p.id} id={p.id} message={p.message} likesCount={p.likesCount}/>);
+    const onClickHandler = () => {
+        props.addPost();
+    }
+    const onChangeHandler = (e: ChangeEvent<HTMLTextAreaElement>) => {
+        props.onChange(e.currentTarget.value)
+    }
+
+    const viewPosts = props.posts.map(p => <Post
+        key={p.id}
+        id={p.id}
+        message={p.message}
+        likesCount={p.likesCount}
+    />);
 
     return (
         <div>
             My posts
             <div>
                 <div>
-                    <textarea></textarea>
+                    <textarea
+                        onClick={onClickHandler}
+                        onChange={onChangeHandler}
+                        value={props.newMessage}
+                    ></textarea>
                 </div>
                 <div>
-                    <button>Add post</button>
+                    <button onClick={onClickHandler}>Add post</button>
                 </div>
             </div>
             <div className={s.posts}>

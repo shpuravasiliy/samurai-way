@@ -1,21 +1,25 @@
 .dialogs {
     display: grid;
     grid-template-columns: 2fr 10fr;
+    grid-template-rows: 1fr 100px;
+    grid-template-areas:    "A B"
+                            "C C";
 }
 
 .dialogsItems {
-
+    grid-area: A;
 }
 
-.dialogsItems .active {
+.dialogsItems :active {
     color: gold;
 }
 
-.dialogsItems .dialog {
-    padding-bottom: 15px;
+.dialog {
+    /*padding-bottom: 15px;*/
     display: grid;
     grid-template-columns: 1fr 1fr;
     align-items: center;
+    margin: 5px;
 
 }
 
@@ -25,10 +29,40 @@
 }
 
 .messages {
-
+    grid-area: B;
 }
 
 .messages.message {
 
+}
+
+.addMessage {
+    grid-area: C;
+    display: flex;
+    justify-content: flex-end;
+    position: static;
+}
+
+.addMessage textarea {
+    height: 25px !important;
+    width: 150px !important;
+    margin: auto 0;
+    outline: 0;
+
+}
+
+.addMessage button {
+    padding: 5px;
+    margin: auto 0;
+    background-color: rgba(66,74,96,0.6);
+    border-radius: 3px;
+}
+
+.addMessage button:hover {
+    box-shadow: 0 0 1px 1px #4C5B99;
+}
+
+.addMessage button:active {
+    background-color: darkgrey;
 }
 

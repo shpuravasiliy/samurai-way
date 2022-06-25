@@ -14,7 +14,7 @@ export type FriendsPropsType = {
 const Sidebar: React.FC<SidebarPropsType> = (props) => {
     const viewSidebar = props.friends.map(f => {
         return (
-            <Friend id={f.id} userName={f.userName} userImg={f.userImg}/>
+            <Friend key={f.id} id={f.id} userName={f.userName} userImg={f.userImg}/>
         )
     })
     return (

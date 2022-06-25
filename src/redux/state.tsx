@@ -2,12 +2,17 @@ import React from 'react';
 import {ProfilePropsType} from '../components/Profile/Profile';
 import {DialogsPropsType} from '../components/Dialogs/Dialogs';
 import {SidebarPropsType} from '../components/Navbar/sidebar/Sidebar';
+import {PostPropsType} from '../components/Profile/MyPosts/Post/Post';
+import {rerenderEntireTree} from '../render';
+import {message} from 'antd';
 
 export type StateType = {
     profilePage: ProfilePropsType
     dialogsPage: DialogsPropsType
     sidebar: SidebarPropsType
 }
+
+let newMessage: string = '';
 
 export let state: StateType = {
     profilePage: {
@@ -31,6 +36,21 @@ export let state: StateType = {
                     'likesCount': 17,
                 },
             ],
+            newMessage: '',
+            addPost: () => {
+                const newPost: PostPropsType = {
+                    id: '5',
+                    message: state.profilePage.myPosts.newMessage,
+                    likesCount: 0
+                }
+                state.profilePage.myPosts.posts.push(newPost);
+                state.profilePage.myPosts.newMessage = '';
+                rerenderEntireTree(state);
+            },
+            onChange: (postMessage: string) => {
+                state.profilePage.myPosts.newMessage = postMessage;
+                rerenderEntireTree(state);
+            }
         },
     },
     dialogsPage: {
@@ -95,6 +115,17 @@ export let state: StateType = {
         ]
     }
 }
+
+
+
+// export const addPost = (postMessage: string) => {
+//         const newPost: PostPropsType = {
+//         id: '5',
+//         message: postMessage,
+//         likesCount: 0
+//     }
+//   state.profilePage.myPosts.posts.push(newPost);
+// }
 
 // export const addPost = (message: string) => {
 //     const newPost: PostPropsType = {
