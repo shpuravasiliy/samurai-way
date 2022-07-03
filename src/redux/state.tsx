@@ -4,7 +4,6 @@ import {DialogsPropsType} from '../components/Dialogs/Dialogs';
 import {SidebarPropsType} from '../components/Navbar/sidebar/Sidebar';
 import {PostPropsType} from '../components/Profile/MyPosts/Post/Post';
 import {rerenderEntireTree} from '../render';
-import {message} from 'antd';
 
 export type StateType = {
     profilePage: ProfilePropsType
@@ -12,7 +11,7 @@ export type StateType = {
     sidebar: SidebarPropsType
 }
 
-let newMessage: string = '';
+// let newMessage: string = '';
 
 export let state: StateType = {
     profilePage: {
@@ -116,8 +115,6 @@ export let state: StateType = {
     }
 }
 
-
-
 // export const addPost = (postMessage: string) => {
 //         const newPost: PostPropsType = {
 //         id: '5',
@@ -126,7 +123,6 @@ export let state: StateType = {
 //     }
 //   state.profilePage.myPosts.posts.push(newPost);
 // }
-
 // export const addPost = (message: string) => {
 //     const newPost: PostPropsType = {
 //         id: '100',
@@ -135,4 +131,3 @@ export let state: StateType = {
 //     }
 //     setPosts([newPost, ...posts])
 // }
-
