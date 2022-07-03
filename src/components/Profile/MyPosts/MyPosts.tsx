@@ -46,7 +46,7 @@ const MyPosts: React.FC<MyPostsPropsType> = (props) => {
             <div>
                 <div>
                     <textarea
-                        onClick={onClickHandler}
+                        // onClick={onClickHandler}
                         onChange={onChangeHandler}
                         value={props.newMessage}
                     ></textarea>
