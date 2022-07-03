@@ -3,7 +3,14 @@ import {ProfilePropsType} from '../components/Profile/Profile';
 import {DialogsPropsType} from '../components/Dialogs/Dialogs';
 import {SidebarPropsType} from '../components/Navbar/sidebar/Sidebar';
 import {PostPropsType} from '../components/Profile/MyPosts/Post/Post';
-import {rerenderEntireTree} from '../render';
+
+let rerenderEntireTree = (state: StateType) => {
+    console.log('State changed');
+}
+
+export const subscribe = (observer: (state: StateType) => void) => {
+    rerenderEntireTree = observer;
+}
 
 export type StateType = {
     profilePage: ProfilePropsType
