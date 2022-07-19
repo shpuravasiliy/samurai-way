@@ -1,8 +1,9 @@
 import {ProfilePropsType} from '../components/Profile/Profile';
 import {DialogsPropsType} from '../components/Dialogs/Dialogs';
 import {SidebarPropsType} from '../components/Navbar/sidebar/Sidebar';
-import {PostPropsType} from '../components/Profile/MyPosts/Post/Post';
-import {MessagePropsType} from '../components/Dialogs/Message/Message';
+import profileReduser, {AddPostACType, UpdateNewPostTextACType} from './profile-reduser';
+import dialogsReduser, {sendMessageACType, UpdateNewMessageBodyACType} from './dialogs-reduser';
+import sidebarReduser from './sidebar-reduser';
 
 export type StateType = {
     profilePage: ProfilePropsType
@@ -18,36 +19,7 @@ export type StoreType = {
 
     dispatch: (action: RootActionType) => void
 }
-
-export type AddPostACType = ReturnType<typeof addPostAC>
-export type UpdateNewPostTextACType = ReturnType<typeof UpdateNewPostTextAC>
-export type sendMessageACType = ReturnType<typeof sendMessageAC>
-export type UpdateNewMessageBodyACType = ReturnType<typeof UpdateNewMessageBodyAC>
-
 export type RootActionType = UpdateNewPostTextACType | AddPostACType | sendMessageACType | UpdateNewMessageBodyACType
-
-export const addPostAC = () => {
-    return {
-        type: 'ADD_POST'
-    } as const
-}
-export const UpdateNewPostTextAC = (postMessage: string) => {
-    return {
-        type: 'UPDATE_NEW_POST_TEXT',
-        postMessage
-    } as const
-}
-export const sendMessageAC = () => {
-    return {
-        type: 'ADD_MESSAGE',
-    } as const
-}
-export const UpdateNewMessageBodyAC = (newMessage: string) => {
-    return {
-        type: 'UPDATE_NEW_MESSAGE_TEXT',
-        newMessage
-    } as const
-}
 
 export let store: StoreType = {
     _state: {
@@ -155,40 +127,9 @@ export let store: StoreType = {
     },
 
     dispatch(action) {
-        switch (action.type) {
-            case 'ADD_POST': {
-                const newPost: PostPropsType = {
-                    id: '5',
-                    message: this._state.profilePage.myPosts.newMessage,
-                    likesCount: 0
-                }
-                this._state.profilePage.myPosts.posts.push(newPost);
-                this._state.profilePage.myPosts.newMessage = '';
-                this._callSubscriber(this);
-                return this._state;
-            }
-            case 'UPDATE_NEW_POST_TEXT': {
-                this._state.profilePage.myPosts.newMessage = action.postMessage;
-                this._callSubscriber(this);
-                return this._state;
-            }
-            case 'ADD_MESSAGE': {
-                const newMessage: MessagePropsType = {
-                    id: '5',
-                    message: this._state.dialogsPage.newMessageBody,
-                }
-                this._state.dialogsPage.messages = [...this._state.dialogsPage.messages, newMessage]
-                this._state.dialogsPage.newMessageBody = '';
-                this._callSubscriber(this);
-                return this._state;
-            }
-            case 'UPDATE_NEW_MESSAGE_TEXT': {
-                this._state.dialogsPage.newMessageBody = action.newMessage;
-                this._callSubscriber(this);
-                return this._state;
-            }
-            default:
-                return this._state;
-        }
+        this._state.profilePage = profileReduser(this._state.profilePage, action);
+        this._state.dialogsPage = dialogsReduser(this._state.dialogsPage, action);
+        this._state.sidebar = sidebarReduser(this._state.sidebar, action);
+        this._callSubscriber(this);
     },
 }
