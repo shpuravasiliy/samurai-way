@@ -1,35 +1,33 @@
-import React, {MouseEvent} from 'react';
+import React, {ChangeEvent} from 'react';
 import s from './Dialogs.module.css'
 import {DialogItem, DialogItemPropsType} from './DialogItem/DialogItem';
 import {Message, MessagePropsType} from './Message/Message';
+import {sendMessageAC, RootActionType, UpdateNewMessageBodyAC} from '../../redux/state';
 
 export type DialogsPropsType = {
-        dialogs: DialogItemPropsType[]
-        messages: MessagePropsType[]
-}
-export type StateDialogsType = {
-    state: {
-        dialogs: DialogItemPropsType[]
-        messages: MessagePropsType[]
-    }
+    dialogs: DialogItemPropsType[]
+    messages: MessagePropsType[]
+    newMessageBody: string
+    dispatch: (action: RootActionType) => void
 }
 
-export const Dialogs: React.FC<StateDialogsType> = (props) => {
-    const viewDialogs = props.state.dialogs.map(d => <DialogItem
+export const Dialogs: React.FC<DialogsPropsType> = (props) => {
+    const viewDialogs = props.dialogs.map(d => <DialogItem
         key={d.id}
         id={d.id}
         name={d.name}
     />);
-    const viewMessages = props.state.messages.map(m => <Message
+    const viewMessages = props.messages.map(m => <Message
         key={m.id}
         id={m.id}
         message={m.message}
     />);
 
-    const refElement = React.createRef<HTMLTextAreaElement>();
-    const onClickHandler = (e: MouseEvent<HTMLButtonElement>) => {
-        const textAreaRef = refElement.current?.value;
-        alert(textAreaRef);
+    const onClickHandler = () => {
+        props.dispatch(sendMessageAC());
+    }
+    const textareaOnChangeHandler = (e: ChangeEvent<HTMLTextAreaElement>) => {
+        props.dispatch(UpdateNewMessageBodyAC(e.currentTarget.value));
     }
 
     return (
@@ -41,7 +39,13 @@ export const Dialogs: React.FC<StateDialogsType> = (props) => {
                 {viewMessages}
             </div>
             <div className={s.addMessage}>
-                <textarea ref={refElement} cols={30} rows={1} placeholder={"Type your message"}></textarea>
+                <textarea
+                    value={props.newMessageBody}
+                    cols={30}
+                    rows={1}
+                    placeholder={'Type your message'}
+                    onChange={textareaOnChangeHandler}
+                />
                 <button onClick={onClickHandler}>Send</button>
             </div>
         </div>

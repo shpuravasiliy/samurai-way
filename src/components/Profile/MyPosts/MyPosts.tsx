@@ -1,7 +1,7 @@
 import React, {ChangeEvent} from 'react';
 import s from './MyPosts.module.css';
 import Post, {PostPropsType} from './Post/Post';
-import {RootActionType} from '../../../redux/state';
+import {addPostAC, RootActionType, UpdateNewPostTextAC} from '../../../redux/state';
 
 export type MyPostsPropsType = {
     posts: PostPropsType[]
@@ -10,32 +10,12 @@ export type MyPostsPropsType = {
 }
 
 const MyPosts: React.FC<MyPostsPropsType> = (props) => {
-    // const [message, setMessage] = useState<string>('');
-    // const onChangeHandler = (e: ChangeEvent<HTMLTextAreaElement>) => {
-    //   setMessage(e.currentTarget.value);
-    // }
-    // const onClickHandler = () => {
-    //     if (!message.trim()) {
-    //         setMessage('');
-    //         return;
-    //     }
-    //   else {
-    //         props.addPost(message);
-    //         setMessage('')
-    //     }
-    // }
-    // let newPostElement = React.createRef<HTMLTextAreaElement>();
 
     const onClickHandler = () => {
-        props.dispatch({
-            type: 'ADD_POST'
-        });
+        props.dispatch(addPostAC());
     }
     const onChangeHandler = (e: ChangeEvent<HTMLTextAreaElement>) => {
-        props.dispatch({
-            type: 'UPDATE_NEW_POST_TEXT',
-            postMessage: e.currentTarget.value
-        });
+        props.dispatch(UpdateNewPostTextAC(e.currentTarget.value));
     }
 
     const viewPosts = props.posts.map(p => <Post
@@ -51,7 +31,6 @@ const MyPosts: React.FC<MyPostsPropsType> = (props) => {
             <div>
                 <div>
                     <textarea
-                        // onClick={onClickHandler}
                         onChange={onChangeHandler}
                         value={props.newMessage}
                     ></textarea>

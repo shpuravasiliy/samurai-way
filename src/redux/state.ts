@@ -1,8 +1,8 @@
-import React from 'react';
 import {ProfilePropsType} from '../components/Profile/Profile';
 import {DialogsPropsType} from '../components/Dialogs/Dialogs';
 import {SidebarPropsType} from '../components/Navbar/sidebar/Sidebar';
 import {PostPropsType} from '../components/Profile/MyPosts/Post/Post';
+import {MessagePropsType} from '../components/Dialogs/Message/Message';
 
 export type StateType = {
     profilePage: ProfilePropsType
@@ -11,24 +11,43 @@ export type StateType = {
 }
 export type StoreType = {
     _state: StateType
-    _callSubscriber: (state: StateType) => void
+    _callSubscriber: (store: StoreType) => void
 
     getState: () => StateType
-    subscribe: (observer: (state: StateType) => void) => void
+    subscribe: (observer: (store: StoreType) => void) => void
 
     dispatch: (action: RootActionType) => void
-    // addPost: () => void
-    // onChange: (postMessage: string) => void
 }
-type AddPostActionType = {
-    type: 'ADD_POST'
-}
-type UpdateNewPostTextActionType = {
-    type: 'UPDATE_NEW_POST_TEXT'
-    postMessage: string
-}
-export type RootActionType = AddPostActionType | UpdateNewPostTextActionType
 
+export type AddPostACType = ReturnType<typeof addPostAC>
+export type UpdateNewPostTextACType = ReturnType<typeof UpdateNewPostTextAC>
+export type sendMessageACType = ReturnType<typeof sendMessageAC>
+export type UpdateNewMessageBodyACType = ReturnType<typeof UpdateNewMessageBodyAC>
+
+export type RootActionType = UpdateNewPostTextACType | AddPostACType | sendMessageACType | UpdateNewMessageBodyACType
+
+export const addPostAC = () => {
+    return {
+        type: 'ADD_POST'
+    } as const
+}
+export const UpdateNewPostTextAC = (postMessage: string) => {
+    return {
+        type: 'UPDATE_NEW_POST_TEXT',
+        postMessage
+    } as const
+}
+export const sendMessageAC = () => {
+    return {
+        type: 'ADD_MESSAGE',
+    } as const
+}
+export const UpdateNewMessageBodyAC = (newMessage: string) => {
+    return {
+        type: 'UPDATE_NEW_MESSAGE_TEXT',
+        newMessage
+    } as const
+}
 
 export let store: StoreType = {
     _state: {
@@ -54,9 +73,11 @@ export let store: StoreType = {
                     },
                 ],
                 newMessage: '',
-                dispatch: (action) => {},
+                dispatch: () => {
+                },
             },
-            dispatch: (action) => {}
+            dispatch: () => {
+            }
         },
         dialogsPage: {
             dialogs: [
@@ -100,7 +121,10 @@ export let store: StoreType = {
                     id: '6',
                     message: 'Yo',
                 },
-            ]
+            ],
+            newMessageBody: '',
+            dispatch: () => {
+            },
         },
         sidebar: {
             friends: [
@@ -120,7 +144,7 @@ export let store: StoreType = {
             ]
         }
     },
-    _callSubscriber(state) {
+    _callSubscriber() {
     },
 
     getState() {
@@ -140,12 +164,27 @@ export let store: StoreType = {
                 }
                 this._state.profilePage.myPosts.posts.push(newPost);
                 this._state.profilePage.myPosts.newMessage = '';
-                this._callSubscriber(this._state);
+                this._callSubscriber(this);
                 return this._state;
             }
             case 'UPDATE_NEW_POST_TEXT': {
                 this._state.profilePage.myPosts.newMessage = action.postMessage;
-                this._callSubscriber(this._state);
+                this._callSubscriber(this);
+                return this._state;
+            }
+            case 'ADD_MESSAGE': {
+                const newMessage: MessagePropsType = {
+                    id: '5',
+                    message: this._state.dialogsPage.newMessageBody,
+                }
+                this._state.dialogsPage.messages = [...this._state.dialogsPage.messages, newMessage]
+                this._state.dialogsPage.newMessageBody = '';
+                this._callSubscriber(this);
+                return this._state;
+            }
+            case 'UPDATE_NEW_MESSAGE_TEXT': {
+                this._state.dialogsPage.newMessageBody = action.newMessage;
+                this._callSubscriber(this);
                 return this._state;
             }
             default:

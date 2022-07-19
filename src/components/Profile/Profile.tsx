@@ -9,10 +9,6 @@ export type ProfilePropsType = {
     dispatch: (action: RootActionType) => void
 }
 
-export type StateProfileType = {
-    state: ProfilePropsType
-}
-
 const Profile: React.FC<ProfilePropsType> = (props) => {
     return (
         <div className={s.profile}>

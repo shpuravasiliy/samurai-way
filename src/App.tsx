@@ -17,11 +17,12 @@ export type AppPropsType = {
 
 const App: React.FC<AppPropsType> = (props) => {
 
-    const dialogs = () => <Dialogs state={props.state.dialogsPage}/>;
+    const dialogs = () => <Dialogs dialogs={props.state.dialogsPage.dialogs} messages={props.state.dialogsPage.messages} newMessageBody={props.state.dialogsPage.newMessageBody} dispatch={props.dispatch}/>;
     const profile = () => <Profile myPosts={props.state.profilePage.myPosts} dispatch={props.dispatch}/>;
     const news = () => <News/>;
     const music = () => <Music/>;
     const settings = () => <Settings/>;
+
     return (
         <BrowserRouter>
             <div className="placeholder">
