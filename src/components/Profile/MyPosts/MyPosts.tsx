@@ -1,12 +1,12 @@
 import React, {ChangeEvent} from 'react';
 import s from './MyPosts.module.css';
 import Post, {PostPropsType} from './Post/Post';
+import {RootActionType} from '../../../redux/state';
 
 export type MyPostsPropsType = {
     posts: PostPropsType[]
     newMessage: string
-    addPost: () => void
-    onChange: (message: string) => void
+    dispatch: (action: RootActionType) => void
 }
 
 const MyPosts: React.FC<MyPostsPropsType> = (props) => {
@@ -27,10 +27,15 @@ const MyPosts: React.FC<MyPostsPropsType> = (props) => {
     // let newPostElement = React.createRef<HTMLTextAreaElement>();
 
     const onClickHandler = () => {
-        props.addPost();
+        props.dispatch({
+            type: 'ADD_POST'
+        });
     }
     const onChangeHandler = (e: ChangeEvent<HTMLTextAreaElement>) => {
-        props.onChange(e.currentTarget.value)
+        props.dispatch({
+            type: 'UPDATE_NEW_POST_TEXT',
+            postMessage: e.currentTarget.value
+        });
     }
 
     const viewPosts = props.posts.map(p => <Post
