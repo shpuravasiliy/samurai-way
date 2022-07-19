@@ -11,7 +11,7 @@ export type StateType = {
 }
 export type StoreType = {
     _state: StateType
-    _rerenderEntireTree: (state: StateType) => void
+    _callSubscriber: (state: StateType) => void
     addPost: () => void
     onChange: (postMessage: string) => void
     subscribe: (observer: (state: StateType) => void) => void
@@ -224,10 +224,10 @@ export let store: StoreType = {
             ]
         }
     },
-    _rerenderEntireTree: function (state: StateType) {
+    _callSubscriber(state: StateType) {
     },
 
-    addPost: function () {
+    addPost() {
         const newPost: PostPropsType = {
             id: '5',
             message: this._state.profilePage.myPosts.newMessage,
@@ -235,16 +235,16 @@ export let store: StoreType = {
         }
         this._state.profilePage.myPosts.posts.push(newPost);
         this._state.profilePage.myPosts.newMessage = '';
-        this._rerenderEntireTree(this._state);
+        this._callSubscriber(this._state);
     },
-    onChange: function (postMessage: string) {
+    onChange(postMessage: string) {
         this._state.profilePage.myPosts.newMessage = postMessage;
-        this._rerenderEntireTree(this._state);
+        this._callSubscriber(this._state);
     },
-    subscribe: function (observer: (state: StateType) => void) {
-        this._rerenderEntireTree = observer;
+    subscribe(observer: (state: StateType) => void) {
+        this._callSubscriber = observer;
     },
-    getState: function () {
+    getState() {
         return this._state;
     },
 }
