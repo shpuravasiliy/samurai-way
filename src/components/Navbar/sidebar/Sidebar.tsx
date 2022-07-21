@@ -1,8 +1,10 @@
 import React from 'react';
 import s from './Sidebar.module.css'
+import {RootActionType} from '../../../redux/store';
 
 export type SidebarPropsType = {
     friends: FriendsPropsType[]
+    dispatch: (action: RootActionType) => void
 }
 
 export type FriendsPropsType = {

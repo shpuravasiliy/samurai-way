@@ -1,9 +1,9 @@
 import {ProfilePropsType} from '../components/Profile/Profile';
 import {DialogsPropsType} from '../components/Dialogs/Dialogs';
 import {SidebarPropsType} from '../components/Navbar/sidebar/Sidebar';
-import profileReduser, {AddPostACType, UpdateNewPostTextACType} from './profile-reduser';
-import dialogsReduser, {sendMessageACType, UpdateNewMessageBodyACType} from './dialogs-reduser';
-import sidebarReduser from './sidebar-reduser';
+import profileReducer, {AddPostACType, UpdateNewPostTextACType} from './profile-reducer';
+import dialogsReducer, {sendMessageACType, UpdateNewMessageBodyACType} from './dialogs-reducer';
+import sidebarReducer from './sidebar-reducer';
 
 export type StateType = {
     profilePage: ProfilePropsType
@@ -48,8 +48,7 @@ export let store: StoreType = {
                 dispatch: () => {
                 },
             },
-            dispatch: () => {
-            }
+            dispatch: () => {}
         },
         dialogsPage: {
             dialogs: [
@@ -95,8 +94,7 @@ export let store: StoreType = {
                 },
             ],
             newMessageBody: '',
-            dispatch: () => {
-            },
+            dispatch: () => {},
         },
         sidebar: {
             friends: [
@@ -113,7 +111,8 @@ export let store: StoreType = {
                     userName: 'Sveta',
                     userImg: 'https://funart.pro/uploads/posts/2021-07/1627661721_14-funart-pro-p-bolshaya-zelenaya-cherepakha-zhivotnie-kra-19.jpg',
                 },
-            ]
+            ],
+            dispatch: () => {},
         }
     },
     _callSubscriber() {
@@ -127,9 +126,9 @@ export let store: StoreType = {
     },
 
     dispatch(action) {
-        this._state.profilePage = profileReduser(this._state.profilePage, action);
-        this._state.dialogsPage = dialogsReduser(this._state.dialogsPage, action);
-        this._state.sidebar = sidebarReduser(this._state.sidebar, action);
+        this._state.profilePage = profileReducer(this._state.profilePage, action);
+        this._state.dialogsPage = dialogsReducer(this._state.dialogsPage, action);
+        this._state.sidebar = sidebarReducer(this._state.sidebar, action);
         this._callSubscriber(this);
     },
 }

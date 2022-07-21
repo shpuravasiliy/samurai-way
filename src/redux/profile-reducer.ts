@@ -1,9 +1,37 @@
 import {PostPropsType} from '../components/Profile/MyPosts/Post/Post';
 import {ProfilePropsType} from '../components/Profile/Profile';
-import {RootActionType} from './state';
+import {RootActionType} from './store';
 
+const initialState: ProfilePropsType = {
+    myPosts: {
+        posts: [
+            {
+                'id': '1',
+                'message': 'Hi, how are you?',
+                'likesCount': 12,
+            }, {
+                'id': '2',
+                'message': 'It\'s my first post',
+                'likesCount': 11,
+            }, {
+                'id': '3',
+                'message': 'BlaBla',
+                'likesCount': 20,
+            }, {
+                'id': '4',
+                'message': 'Dada',
+                'likesCount': 17,
+            },
+        ],
+        newMessage: '',
+        dispatch: () => {
+        },
+    },
+    dispatch: () => {
+    }
+}
 
-const profileReduser = (state: ProfilePropsType, action: RootActionType) => {
+const profileReducer = (state: ProfilePropsType = initialState, action: RootActionType) => {
     switch (action.type) {
         case 'ADD_POST': {
             const newPost: PostPropsType = {
@@ -39,4 +67,4 @@ export const UpdateNewPostTextAC = (postMessage: string) => {
     } as const
 }
 
-export default profileReduser;
+export default profileReducer;

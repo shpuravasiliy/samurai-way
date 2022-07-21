@@ -14,7 +14,7 @@ const Navbar: React.FC<SidebarPropsType> = (props) => {
                 <li className={s.item}><NavLink to="/music" activeClassName={s.active}>Music</NavLink></li>
                 <li className={s.item}><NavLink to="/settings" activeClassName={s.active}>Settings</NavLink></li>
             </ul>
-            <Sidebar friends={props.friends}/>
+            <Sidebar friends={props.friends}  dispatch={props.dispatch}/>
         </nav>
     );
 };
