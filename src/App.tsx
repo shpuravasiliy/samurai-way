@@ -9,26 +9,35 @@ import News from './components/News/News';
 import Music from './components/Music/Music';
 import Settings from './components/Settings/Settings';
 import {RootActionType, StateType} from './redux/store';
+import {StoreType} from './index';
+import {DialogsContainer} from './components/Dialogs/DialogsContainer';
 
 export type AppPropsType = {
     state: StateType
     dispatch: (action: RootActionType) => void
 }
 
-const App: React.FC<AppPropsType> = (props) => {
+export type ContainerPropsType = {
+    store: StoreType
+}
 
-    const dialogs = () => <Dialogs dialogs={props.state.dialogsPage.dialogs} messages={props.state.dialogsPage.messages} newMessageBody={props.state.dialogsPage.newMessageBody} dispatch={props.dispatch}/>;
-    const profile = () => <Profile myPosts={props.state.profilePage.myPosts} dispatch={props.dispatch}/>;
+const App: React.FC<ContainerPropsType> = (props) => {
+
+    // const dialogs = () => <Dialogs dialogs={props.state.dialogsPage.dialogs} messages={props.state.dialogsPage.messages} newMessageBody={props.state.dialogsPage.newMessageBody} dispatch={props.dispatch}/>;
+    // const profile = () => <Profile myPosts={props.state.profilePage.myPosts} dispatch={props.dispatch}/>;
+    const dialogs = () => <DialogsContainer store={props.store}/>;
+    const profile = () => <Profile store={props.store}/>;
     const news = () => <News/>;
     const music = () => <Music/>;
     const settings = () => <Settings/>;
+    const friends = props.store.getState().sidebar.friends
 
     return (
         <BrowserRouter>
             <div className="placeholder">
                 <div className="app-wrapper">
                     <Header/>
-                    <Navbar friends={props.state.sidebar.friends} dispatch={props.dispatch}/>
+                    <Navbar friends={friends} dispatch={props.store.dispatch}/>
                     <div className="app-wrapper-content">
                         <Route path='/dialogs' render={dialogs} />
                         <Route path='/profile' render={profile}/>

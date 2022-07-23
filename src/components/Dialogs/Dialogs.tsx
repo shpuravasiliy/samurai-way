@@ -2,8 +2,7 @@ import React, {ChangeEvent} from 'react';
 import s from './Dialogs.module.css'
 import {DialogItem, DialogItemPropsType} from './DialogItem/DialogItem';
 import {Message, MessagePropsType} from './Message/Message';
-import { RootActionType } from '../../redux/store';
-import {sendMessageAC, UpdateNewMessageBodyAC} from '../../redux/dialogs-reducer';
+import {RootActionType} from '../../redux/store';
 
 export type DialogsPropsType = {
     dialogs: DialogItemPropsType[]
@@ -12,7 +11,16 @@ export type DialogsPropsType = {
     dispatch: (action: RootActionType) => void
 }
 
-export const Dialogs: React.FC<DialogsPropsType> = (props) => {
+export type DialogsPresentPropsType = {
+    dialogs: DialogItemPropsType[]
+    messages: MessagePropsType[]
+    newMessageBody: string
+    sendMessage: () => void
+    updateNewMessageBody: (newMessageBody: string) => void
+}
+
+export const Dialogs: React.FC<DialogsPresentPropsType> = (props) => {
+
     const viewDialogs = props.dialogs.map(d => <DialogItem
         key={d.id}
         id={d.id}
@@ -25,10 +33,10 @@ export const Dialogs: React.FC<DialogsPropsType> = (props) => {
     />);
 
     const onClickHandler = () => {
-        props.dispatch(sendMessageAC());
+        props.sendMessage();
     }
     const textareaOnChangeHandler = (e: ChangeEvent<HTMLTextAreaElement>) => {
-        props.dispatch(UpdateNewMessageBodyAC(e.currentTarget.value));
+        props.updateNewMessageBody(e.currentTarget.value);
     }
 
     return (
