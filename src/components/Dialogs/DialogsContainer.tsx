@@ -1,29 +1,33 @@
 import React from 'react';
 import {sendMessageAC, UpdateNewMessageBodyAC} from '../../redux/dialogs-reducer';
-import {ContainerPropsType} from '../../App';
 import {Dialogs} from './Dialogs';
+import {StoreContext} from '../../StoreContext';
 
-export const DialogsContainer: React.FC<ContainerPropsType> = (props) => {
-
-    const dialogs = props.store.getState().dialogsPage.dialogs;
-    const messages = props.store.getState().dialogsPage.messages;
-    const newMessageBody = props.store.getState().dialogsPage.newMessageBody;
-    const dispatch = props.store.dispatch;
-
-    const sendMessageHandler = () => {
-        dispatch(sendMessageAC());
-    };
-    const updateNewMessageBodyHandler = (newMessageBody: string) => {
-        dispatch(UpdateNewMessageBodyAC(newMessageBody));
-    };
-
+export const DialogsContainer = () => {
     return (
-        <Dialogs
-            dialogs={dialogs}
-            messages={messages}
-            newMessageBody={newMessageBody}
-            sendMessage={sendMessageHandler}
-            updateNewMessageBody={updateNewMessageBodyHandler}
-        />
+        <StoreContext.Consumer>
+            {store => {
+                const dialogs = store.getState().dialogsPage.dialogs;
+                const messages = store.getState().dialogsPage.messages;
+                const newMessageBody = store.getState().dialogsPage.newMessageBody;
+                const dispatch = store.dispatch;
+
+                const sendMessageHandler = () => {
+                    dispatch(sendMessageAC());
+                };
+                const updateNewMessageBodyHandler = (newMessageBody: string) => {
+                    dispatch(UpdateNewMessageBodyAC(newMessageBody));
+                };
+                return (
+                    <Dialogs
+                        dialogs={dialogs}
+                        messages={messages}
+                        newMessageBody={newMessageBody}
+                        sendMessage={sendMessageHandler}
+                        updateNewMessageBody={updateNewMessageBodyHandler}
+                    />
+                )
+            }}
+        </StoreContext.Consumer>
     );
 };

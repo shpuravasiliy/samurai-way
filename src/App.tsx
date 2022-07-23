@@ -20,23 +20,25 @@ export type ContainerPropsType = {
     store: StoreType
 }
 
-const App: React.FC<ContainerPropsType> = (props) => {
+const App = () => {
 
-    // const dialogs = () => <Dialogs dialogs={props.state.dialogsPage.dialogs} messages={props.state.dialogsPage.messages} newMessageBody={props.state.dialogsPage.newMessageBody} dispatch={props.dispatch}/>;
-    // const profile = () => <Profile myPosts={props.state.profilePage.myPosts} dispatch={props.dispatch}/>;
-    const dialogs = () => <DialogsContainer store={props.store}/>;
-    const profile = () => <Profile store={props.store}/>;
+
+
+    // const dialogs = () => <DialogsContainer store={props.store}/>;
+    const dialogs = () => <DialogsContainer/>;
+    // const profile = () => <Profile store={props.store}/>;
+    const profile = () => <Profile />;
     const news = () => <News/>;
     const music = () => <Music/>;
     const settings = () => <Settings/>;
-    const friends = props.store.getState().sidebar.friends
+
 
     return (
         <BrowserRouter>
             <div className="placeholder">
                 <div className="app-wrapper">
                     <Header/>
-                    <Navbar friends={friends} dispatch={props.store.dispatch}/>
+                    <Navbar/>
                     <div className="app-wrapper-content">
                         <Route path='/dialogs' render={dialogs} />
                         <Route path='/profile' render={profile}/>

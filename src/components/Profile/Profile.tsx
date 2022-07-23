@@ -4,8 +4,6 @@ import {MyPostsPropsType} from './MyPosts/MyPosts';
 import {ProfileInfo} from './ProfileInfo/ProfileInfo';
 import {RootActionType} from '../../redux/store';
 import MyPostsContainer from './MyPosts/MyPostsContainer';
-import {StoreType} from '../../index';
-import {ContainerPropsType} from '../../App';
 
 export type ProfilePropsType = {
     myPosts: MyPostsPropsType
@@ -13,7 +11,7 @@ export type ProfilePropsType = {
 }
 
 
-const Profile: React.FC<ContainerPropsType> = (props) => {
+const Profile = () => {
     return (
         <div className={s.profile}>
             <ProfileInfo/>
@@ -21,7 +19,7 @@ const Profile: React.FC<ContainerPropsType> = (props) => {
                 // posts={props.myPosts.posts}
                 // newMessage={props.myPosts.newMessage}
                 // dispatch={props.dispatch}
-                store={props.store}
+                // store={props.store}
             />
         </div>
     );

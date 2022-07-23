@@ -7,12 +7,15 @@ import {ProfilePropsType} from './components/Profile/Profile';
 import {DialogsPropsType} from './components/Dialogs/Dialogs';
 import {EmptyObject, Store} from 'redux';
 import {SidebarPropsType} from './components/Navbar/sidebar/Sidebar';
+import Provider from './StoreContext';
 
 export type StoreType = Store<EmptyObject & { profilePage: ProfilePropsType; dialogsPage: DialogsPropsType; sidebar: SidebarPropsType }>
 
 const rerenderEntireTree = (store: StoreType) => {
     ReactDOM.render(
-        <App store={store} />,
+        <Provider store={store}>
+            <App />
+        </Provider>,
         document.getElementById('root')
     );
 }

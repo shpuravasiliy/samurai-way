@@ -1,10 +1,11 @@
 import React from 'react';
 import s from './Navbar.module.css'
 import {NavLink} from 'react-router-dom';
-import Sidebar, {SidebarPropsType} from './sidebar/Sidebar';
+import Sidebar from './sidebar/Sidebar';
+import {StoreContext} from '../../StoreContext';
 
 
-const Navbar: React.FC<SidebarPropsType> = (props) => {
+const Navbar = () => {
     return (
         <nav className={s.nav}>
             <ul className={s.item}>
@@ -14,7 +15,14 @@ const Navbar: React.FC<SidebarPropsType> = (props) => {
                 <li className={s.item}><NavLink to="/music" activeClassName={s.active}>Music</NavLink></li>
                 <li className={s.item}><NavLink to="/settings" activeClassName={s.active}>Settings</NavLink></li>
             </ul>
-            <Sidebar friends={props.friends}  dispatch={props.dispatch}/>
+            <StoreContext.Consumer>
+                {store => {
+                    const friends = store.getState().sidebar.friends
+                    return (
+                        <Sidebar friends={friends}  dispatch={store.dispatch}/>
+                    )
+                }}
+            </StoreContext.Consumer>
         </nav>
     );
 };
