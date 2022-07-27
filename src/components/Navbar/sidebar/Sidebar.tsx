@@ -1,22 +1,17 @@
 import React from 'react';
 import s from './Sidebar.module.css'
-import {RootActionType} from '../../../redux/store';
-
-export type SidebarPropsType = {
-    friends: FriendsPropsType[]
-    dispatch: (action: RootActionType) => void
-}
-
-export type FriendsPropsType = {
-    id: string
-    userName: string
-    userImg: string
-}
+import {SidebarPropsType} from './SidebarContainer';
+import {friendsType} from '../../../redux/sidebar-reducer';
 
 const Sidebar: React.FC<SidebarPropsType> = (props) => {
     const viewSidebar = props.friends.map(f => {
         return (
-            <Friend key={f.id} id={f.id} userName={f.userName} userImg={f.userImg}/>
+            <Friend
+                key={f.id}
+                id={f.id}
+                userName={f.userName}
+                userImg={f.userImg}
+            />
         )
     })
     return (
@@ -27,11 +22,18 @@ const Sidebar: React.FC<SidebarPropsType> = (props) => {
     );
 };
 
-const Friend: React.FC<FriendsPropsType> = (props) => {
+const Friend: React.FC<friendsType> = (props) => {
     return (
-        <div key={props.id} className={s.friend}>
-            <div><img src={props.userImg} alt=""/></div>
+        <div
+            key={props.id}
+            className={s.friend}
+        >
+            <div><img
+                src={props.userImg}
+                alt=""
+            /></div>
             <div className={s.friendName}>{props.userName}</div>
         </div>)
 }
+
 export default Sidebar;

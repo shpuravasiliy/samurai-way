@@ -1,32 +1,17 @@
 import React, {ChangeEvent} from 'react';
 import s from './Dialogs.module.css'
-import {DialogItem, DialogItemPropsType} from './DialogItem/DialogItem';
-import {Message, MessagePropsType} from './Message/Message';
-import {RootActionType} from '../../redux/store';
+import {DialogItem} from './DialogItem/DialogItem';
+import {Message} from './Message/Message';
+import {DialogsPropsType} from './DialogsContainer';
 
-export type DialogsPropsType = {
-    dialogs: DialogItemPropsType[]
-    messages: MessagePropsType[]
-    newMessageBody: string
-    dispatch: (action: RootActionType) => void
-}
+export const Dialogs: React.FC<DialogsPropsType> = (props) => {
 
-export type DialogsPresentPropsType = {
-    dialogs: DialogItemPropsType[]
-    messages: MessagePropsType[]
-    newMessageBody: string
-    sendMessage: () => void
-    updateNewMessageBody: (newMessageBody: string) => void
-}
-
-export const Dialogs: React.FC<DialogsPresentPropsType> = (props) => {
-
-    const viewDialogs = props.dialogs.map(d => <DialogItem
+    const viewDialogs = props.dialogsPage.dialogs.map(d => <DialogItem
         key={d.id}
         id={d.id}
         name={d.name}
     />);
-    const viewMessages = props.messages.map(m => <Message
+    const viewMessages = props.dialogsPage.messages.map(m => <Message
         key={m.id}
         id={m.id}
         message={m.message}
@@ -49,7 +34,7 @@ export const Dialogs: React.FC<DialogsPresentPropsType> = (props) => {
             </div>
             <div className={s.addMessage}>
                 <textarea
-                    value={props.newMessageBody}
+                    value={props.dialogsPage.newMessageBody}
                     cols={30}
                     rows={1}
                     placeholder={'Type your message'}

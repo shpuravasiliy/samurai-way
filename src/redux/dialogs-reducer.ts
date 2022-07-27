@@ -1,8 +1,13 @@
 import {MessagePropsType} from '../components/Dialogs/Message/Message';
-import {DialogsPropsType} from '../components/Dialogs/Dialogs';
-import {RootActionType} from './store';
+import {DialogItemPropsType} from '../components/Dialogs/DialogItem/DialogItem';
 
-const initialState: DialogsPropsType = {
+export type DialogsInitialStateType = {
+    dialogs: DialogItemPropsType[]
+    messages: MessagePropsType[]
+    newMessageBody: string
+}
+
+const initialState: DialogsInitialStateType = {
     dialogs: [
         {
             id: '1',
@@ -46,32 +51,12 @@ const initialState: DialogsPropsType = {
         },
     ],
     newMessageBody: '',
-    dispatch: () => {
-    },
-}
-
-const dialogsReducer = (state: DialogsPropsType = initialState, action: RootActionType) => {
-    switch (action.type) {
-        case 'ADD_MESSAGE': {
-            const newMessage: MessagePropsType = {
-                id: '5',
-                message: state.newMessageBody,
-            }
-            state.messages = [...state.messages, newMessage]
-            state.newMessageBody = '';
-            return state;
-        }
-        case 'UPDATE_NEW_MESSAGE_TEXT': {
-            state.newMessageBody = action.newMessage;
-            return state;
-        }
-        default:
-            return state;
-    }
 }
 
 export type sendMessageACType = ReturnType<typeof sendMessageAC>
 export type UpdateNewMessageBodyACType = ReturnType<typeof UpdateNewMessageBodyAC>
+
+type ActionTypes = sendMessageACType | UpdateNewMessageBodyACType
 
 export const sendMessageAC = () => {
     return {
@@ -83,6 +68,23 @@ export const UpdateNewMessageBodyAC = (newMessage: string) => {
         type: 'UPDATE_NEW_MESSAGE_TEXT',
         newMessage
     } as const
+}
+
+const dialogsReducer = (state: DialogsInitialStateType = initialState, action: ActionTypes): DialogsInitialStateType => {
+    switch (action.type) {
+        case 'ADD_MESSAGE': {
+            const newMessage: MessagePropsType = {
+                id: '5',
+                message: state.newMessageBody,
+            }
+            return {...state, messages: [...state.messages, newMessage], newMessageBody: ''};
+        }
+        case 'UPDATE_NEW_MESSAGE_TEXT': {
+            return {...state, newMessageBody: action.newMessage};
+        }
+        default:
+            return state;
+    }
 }
 
 export default dialogsReducer;

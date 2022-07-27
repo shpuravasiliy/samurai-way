@@ -1,8 +1,11 @@
 import {PostPropsType} from '../components/Profile/MyPosts/Post/Post';
-import {ProfilePropsType} from '../components/Profile/Profile';
-import {RootActionType} from './store';
+import {MyPostsStateType} from '../components/Profile/MyPosts/MyPosts';
 
-const initialState: ProfilePropsType = {
+export type ProfileInitialStateType = {
+    myPosts: MyPostsStateType
+}
+
+const initialState: ProfileInitialStateType = {
     myPosts: {
         posts: [
             {
@@ -24,36 +27,13 @@ const initialState: ProfilePropsType = {
             },
         ],
         newMessage: '',
-        dispatch: () => {
-        },
     },
-    dispatch: () => {
-    }
-}
-
-const profileReducer = (state: ProfilePropsType = initialState, action: RootActionType) => {
-    switch (action.type) {
-        case 'ADD_POST': {
-            const newPost: PostPropsType = {
-                id: '5',
-                message: state.myPosts.newMessage,
-                likesCount: 0
-            }
-            state.myPosts.posts.push(newPost);
-            state.myPosts.newMessage = '';
-            return state;
-        }
-        case 'UPDATE_NEW_POST_TEXT': {
-            state.myPosts.newMessage = action.postMessage;
-            return state;
-        }
-        default:
-            return state;
-    }
 }
 
 export type AddPostACType = ReturnType<typeof addPostAC>
 export type UpdateNewPostTextACType = ReturnType<typeof UpdateNewPostTextAC>
+
+type ActionsType = AddPostACType | UpdateNewPostTextACType
 
 export const addPostAC = () => {
     return {
@@ -65,6 +45,24 @@ export const UpdateNewPostTextAC = (postMessage: string) => {
         type: 'UPDATE_NEW_POST_TEXT',
         postMessage
     } as const
+}
+
+const profileReducer = (state: ProfileInitialStateType = initialState, action: ActionsType): ProfileInitialStateType => {
+    switch (action.type) {
+        case 'ADD_POST': {
+            const newPost: PostPropsType = {
+                id: '5',
+                message: state.myPosts.newMessage,
+                likesCount: 0
+            }
+            return {...state, myPosts: {...state.myPosts, newMessage: '', posts: [...state.myPosts.posts, newPost]}, };
+        }
+        case 'UPDATE_NEW_POST_TEXT': {
+            return {...state, myPosts: {...state.myPosts, newMessage: action.postMessage}};
+        }
+        default:
+            return state;
+    }
 }
 
 export default profileReducer;

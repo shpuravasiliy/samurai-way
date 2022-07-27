@@ -1,22 +1,14 @@
 import React, {ChangeEvent} from 'react';
 import s from './MyPosts.module.css';
 import Post, {PostPropsType} from './Post/Post';
-import {RootActionType} from '../../../redux/store';
+import {MyPostsType} from './MyPostsContainer';
 
-export type MyPostsPropsType = {
+export type MyPostsStateType = {
     posts: PostPropsType[]
     newMessage: string
-    dispatch: (action: RootActionType) => void
 }
 
-export type MyPostsPresentPropsType = {
-    posts: PostPropsType[]
-    newMessage: string
-    addPost: () => void
-    updateNewPostText: (newPostText: string) => void
-}
-
-const MyPosts: React.FC<MyPostsPresentPropsType> = (props) => {
+const MyPosts: React.FC<MyPostsType> = (props) => {
 
     const onAddPost = () => {
         props.addPost();
@@ -25,7 +17,7 @@ const MyPosts: React.FC<MyPostsPresentPropsType> = (props) => {
         props.updateNewPostText(e.currentTarget.value);
     }
 
-    const viewPosts = props.posts.map(p => <Post
+    const viewPosts = props.myPostsPage.posts.map(p => <Post
         key={p.id}
         id={p.id}
         message={p.message}
@@ -39,7 +31,7 @@ const MyPosts: React.FC<MyPostsPresentPropsType> = (props) => {
                 <div>
                     <textarea
                         onChange={onPostChange}
-                        value={props.newMessage}
+                        value={props.myPostsPage.newMessage}
                     ></textarea>
                 </div>
                 <div>
