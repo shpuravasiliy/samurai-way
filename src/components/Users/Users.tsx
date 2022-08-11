@@ -1,68 +1,83 @@
 import React from 'react';
 import {UsersPropsType} from './UsersContainer';
 import User from './User/User';
-import {userType} from '../../redux/users-reducer';
+import axios from 'axios';
+import {ServerResponseUsersType, userType} from '../../redux/users-reducer';
+import style from './Users.module.css'
 
-const Users: React.FC<UsersPropsType> = ({usersPage, follow, unfollow, setUsers}) => {
-    
-    const onClickHandler = () => {
-        const newUsers: userType[] = [
-            {
-                id: '1' + Date.now(),
-                fullName: 'Dmitry',
-                status: 'I am looking for Job right now',
-                location: {
-                    country: 'Belarus',
-                    city: 'Minsk',
-                },
-                avatar: 'https://www.blexar.com/avatar.png',
-                followed: false,
-            },
-            {
-                id: '2' + Date.now(),
-                fullName: 'Svetlana',
-                status: 'I am so pretty',
-                location: {
-                    country: 'Belarus',
-                    city: 'Minsk',
-                },
-                avatar: 'https://www.blexar.com/avatar.png',
-                followed: false,
-            },
-            {
-                id: '3' + Date.now(),
-                fullName: 'Sergei',
-                status: 'I like football!',
-                location: {
-                    country: 'Ukraine',
-                    city: 'Kiev',
-                },
-                avatar: 'https://www.blexar.com/avatar.png',
-                followed: true,
-            },
-            {
-                id: '4' + Date.now(),
-                fullName: 'Andrew',
-                status: 'I am free  to help you to create good Video Production',
-                location: {
-                    country: 'USA',
-                    city: 'New-York',
-                },
-                avatar: 'https://www.blexar.com/avatar.png',
-                followed: true,
-            },
-        ]
-        setUsers(newUsers)
+type OwnStateType = {
+    countUsers: number,
+    page: number
+}
+
+class Users extends React.Component<UsersPropsType, OwnStateType> {
+    state: OwnStateType = {
+        countUsers: 4,
+        page: 1
+    };
+
+    onClickHandler = () => {
+        this.setState((state) => ({
+                page: state.page + 1,
+            }),
+            () => {
+                axios
+                    .get(`https://social-network.samuraijs.com/api/1.0/users?count=${this.state.countUsers}&page=${this.state.page}`)
+                    .then((res) => {
+                        this.props.setUsers(res.data.items as userType[]);
+                    })
+            });
     }
-    
-    return (
-        <div>
-            <div>{usersPage.map(u => <User key={u.id} follow={follow} unfollow={unfollow} {...u}/>)}</div>
-            <div style={{justifyContent: 'center'}}>
-                <button onClick={onClickHandler}>Show more</button>
+
+    componentDidMount() {
+        axios
+            .get<ServerResponseUsersType>(`https://social-network.samuraijs.com/api/1.0/users?count=${this.props.pageSize}&page=${this.props.currentPage}`)
+            .then((res) => {
+                this.props.setUsers(res.data.items as userType[]);
+                this.props.setTotalUsersCount(res.data.totalCount);
+            })
+    }
+
+    componentWillUnmount() {
+        this.props.setUsers([])
+
+    }
+
+    onPageChanged = (pageNumber: number) => {
+        this.props.setCurrentPage(pageNumber);
+        axios
+            .get(`https://social-network.samuraijs.com/api/1.0/users?count=${this.state.countUsers}&page=${pageNumber}`)
+            .then((res) => {
+                this.props.setUsers(res.data.items as userType[])
+            })
+
+    }
+
+    render() {
+        const pagesCount = Math.ceil(this.props.totalUsersCount / this.props.pageSize);
+        let pages = [];
+
+        for (let i = 1; i < pagesCount; i++) {
+            pages.push(i);
+        }
+
+        const showPages = pagesCount > 5 ? this.props.currentPage <= 3 ? pages.slice(0, 5) : pages.slice(this.props.currentPage - 3, this.props.currentPage + 2) : pages
+
+        return (
+            <div>
+                <div>
+                    {showPages.map(p => <span className={`${this.props.currentPage === p ? style.selectedPage : ''} ${style.pageNumber}`} onClick={() => this.onPageChanged(p)}>{p} </span>)}
+                </div>
+                <div>{this.props.users.map(u => <User
+                    key={u.id}
+                    follow={this.props.follow}
+                    unfollow={this.props.unfollow} {...u}/>)}</div>
+                <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
+                    <button onClick={this.onClickHandler}>Show more</button>
+                </div>
             </div>
-        </div>
-    );
-};
+        );
+    }
+}
 
 export default Users;

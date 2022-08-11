@@ -1,4 +1,4 @@
-import {combineReducers, createStore} from 'redux';
+import {combineReducers, createStore, compose} from 'redux';
 import profileReducer from './profile-reducer';
 import dialogsReducer from './dialogs-reducer';
 import sidebarReducer from './sidebar-reducer';
@@ -8,7 +8,13 @@ type RootReducerType = typeof reducers;
 
 export type AppStateType = ReturnType<RootReducerType>
 
-// export type RootActionType = UpdateNewPostTextACType | AddPostACType | sendMessageACType | UpdateNewMessageBodyACType
+declare global {
+    interface Window {
+        __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: typeof compose;
+    }
+}
+
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 
 const reducers = combineReducers({
     profilePage: profileReducer,
@@ -17,4 +23,4 @@ const reducers = combineReducers({
     usersPage: usersReducer,
 });
 
-export const store = createStore(reducers)
+export const store = createStore(reducers, composeEnhancers())

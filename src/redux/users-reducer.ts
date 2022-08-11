@@ -1,74 +1,43 @@
 export type userType = {
-    id: string
-    fullName: string
-    status: string
-    location: {
-        country: string
-        city: string
-    }
-    avatar: string
+    id: number
+    name: string
+    photos: {
+        small: null | string
+        large: null | string
+    },
+    status: null | string
     followed: boolean
 }
-export type UsersInitialStateType = {
-    usersPage: userType[]
+
+export type ServerResponseUsersType = {
+    items: userType[]
+    totalCount: number
+    error: boolean
 }
 
-const initialState: UsersInitialStateType = {
-    usersPage: [
-        {
-            id: '1',
-            fullName: 'Dmitry',
-            status: 'I am looking for Job right now',
-            location: {
-                country: 'Belarus',
-                city: 'Minsk',
-            },
-            avatar: 'https://www.blexar.com/avatar.png',
-            followed: false,
-        },
-        {
-            id: '2',
-            fullName: 'Svetlana',
-            status: 'I am so pretty',
-            location: {
-                country: 'Belarus',
-                city: 'Minsk',
-            },
-            avatar: 'https://www.blexar.com/avatar.png',
-            followed: false,
-        },
-        {
-            id: '3',
-            fullName: 'Sergei',
-            status: 'I like football!',
-            location: {
-                country: 'Ukraine',
-                city: 'Kiev',
-            },
-            avatar: 'https://www.blexar.com/avatar.png',
-            followed: true,
-        },
-        {
-            id: '4',
-            fullName: 'Andrew',
-            status: 'I am free  to help you to create good Video Production',
-            location: {
-                country: 'USA',
-                city: 'New-York',
-            },
-            avatar: 'https://www.blexar.com/avatar.png',
-            followed: true,
-        },
-    ]
+export type UsersInitialStateType = {
+    users: userType[]
+    pageSize: number
+    totalUsersCount: number
+    currentPage: number
+}
+
+let initialState: UsersInitialStateType = {
+    users: [],
+    pageSize: 4,
+    totalUsersCount: 0,
+    currentPage: 1,
 }
 
 export type followACType = ReturnType<typeof followAC>
 export type unfollowACType = ReturnType<typeof unfollowAC>
 export type setUsersACType = ReturnType<typeof setUsersAC>
+export type setCurrentPageACType = ReturnType<typeof setCurrentPageAC>
+export type setTotalUsersCountACType = ReturnType<typeof setTotalUsersCountAC>
 
-type ActionsType = followACType | unfollowACType | setUsersACType
+type ActionsType = followACType | unfollowACType | setUsersACType | setCurrentPageACType | setTotalUsersCountACType
 
-export const followAC = (userID: string) => {
+export const followAC = (userID: number) => {
     return {
         type: 'FOLLOW',
         payload: {
@@ -76,7 +45,7 @@ export const followAC = (userID: string) => {
         }
     } as const
 }
-export const unfollowAC = (userID: string) => {
+export const unfollowAC = (userID: number) => {
     return {
         type: 'UNFOLLOW',
         payload: {
@@ -92,25 +61,53 @@ export const setUsersAC = (users: userType[]) => {
         }
     } as const
 }
+export const setCurrentPageAC = (pageNumber: number) => {
+    return {
+        type: 'SET-CURRENT-PAGE',
+        payload: {
+            pageNumber
+        }
+    } as const
+}
+export const setTotalUsersCountAC = (TotalUsersCount: number) => {
+    return {
+        type: 'SET-TOTAL-USERS-COUNT',
+        payload: {
+            TotalUsersCount
+        }
+    } as const
+}
 
 const usersReducer = (state: UsersInitialStateType = initialState, action: ActionsType): UsersInitialStateType => {
     switch (action.type) {
         case 'FOLLOW': {
             return {
                 ...state,
-                usersPage: state.usersPage.map(u => u.id === action.payload.userID ? {...u, followed: true} : u)
+                users: state.users.map(u => u.id === action.payload.userID ? {...u, followed: true} : u)
             };
         }
         case 'UNFOLLOW': {
             return {
                 ...state,
-                usersPage: state.usersPage.map(u => u.id === action.payload.userID ? {...u, followed: false} : u)
+                users: state.users.map(u => u.id === action.payload.userID ? {...u, followed: false} : u)
             };
         }
         case 'SET-USERS': {
             return {
                 ...state,
-                usersPage: [...state.usersPage, ...action.payload.users]
+                users: [...action.payload.users]
+            };
+        }
+        case 'SET-CURRENT-PAGE': {
+            return {
+                ...state,
+                currentPage: action.payload.pageNumber
+            };
+        }
+        case 'SET-TOTAL-USERS-COUNT': {
+            return {
+                ...state,
+                totalUsersCount: action.payload.TotalUsersCount
             };
         }
         default:

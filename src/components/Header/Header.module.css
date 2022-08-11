@@ -1,7 +1,10 @@
 .header {
     grid-area: header;
     background-color: cadetblue;
+    display: flex;
 }
 .header img {
     width: 50px;
+    align-self: center;
+    padding-left: 10px
 }

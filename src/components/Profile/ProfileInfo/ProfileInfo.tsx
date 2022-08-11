@@ -1,13 +1,14 @@
 import React from 'react';
 import s from './ProfileInfo.module.css';
+import profileHeader from '../../../assets/images/profileHeader.png'
 
 export const ProfileInfo = () => {
     return (
         <div>
             <div className={s.header}>
                 <img
-                    src="https://spottingit.com/wp-content/uploads/2018/11/Social-networks-are-a-reality-that-every-company-must-know-how-to-manage-in-a-very-personalized-way.jpg"
-                    alt="Social network"
+                    src={profileHeader}
+                    alt="Profile header"
                 />
             </div>
             <div>
