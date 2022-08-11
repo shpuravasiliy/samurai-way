@@ -1,9 +1,33 @@
 import {PostPropsType} from '../components/Profile/MyPosts/Post/Post';
 import {MyPostsStateType} from '../components/Profile/MyPosts/MyPosts';
 
+export type profileUserType = {
+    aboutMe: stringOrNullType,
+    contacts: {
+        facebook: stringOrNullType,
+        website: stringOrNullType,
+        vk: stringOrNullType,
+        twitter: stringOrNullType,
+        instagram: stringOrNullType,
+        youtube: stringOrNullType,
+        github: stringOrNullType,
+        mainLink: stringOrNullType
+    },
+    lookingForAJob: boolean,
+    lookingForAJobDescription: stringOrNullType,
+    fullName: string,
+    userId: number,
+    photos: {
+        small: stringOrNullType,
+        large: stringOrNullType,
+    },
+}
 export type ProfileInitialStateType = {
     myPosts: MyPostsStateType
+    profile: profileUserType
 }
+
+type stringOrNullType = string | null
 
 const initialState: ProfileInitialStateType = {
     myPosts: {
@@ -28,12 +52,14 @@ const initialState: ProfileInitialStateType = {
         ],
         newMessage: '',
     },
+    profile: {} as profileUserType,
 }
 
 export type AddPostACType = ReturnType<typeof addPost>
-export type UpdateNewPostTextACType = ReturnType<typeof updateNewPostText>
+export type updateNewPostTextACType = ReturnType<typeof updateNewPostText>
+export type setUserProfileACType = ReturnType<typeof setUserProfile>
 
-type ActionsType = AddPostACType | UpdateNewPostTextACType
+type ActionsType = AddPostACType | updateNewPostTextACType | setUserProfileACType
 
 export const addPost = () => {
     return {
@@ -44,6 +70,14 @@ export const updateNewPostText = (postMessage: string) => {
     return {
         type: 'UPDATE_NEW_POST_TEXT',
         postMessage
+    } as const
+}
+export const setUserProfile = (profile: profileUserType) => {
+    return {
+        type: 'SET-USER-PROFILE',
+        payload: {
+            profile
+        }
     } as const
 }
 
@@ -59,6 +93,9 @@ const profileReducer = (state: ProfileInitialStateType = initialState, action: A
         }
         case 'UPDATE_NEW_POST_TEXT': {
             return {...state, myPosts: {...state.myPosts, newMessage: action.postMessage}};
+        }
+        case 'SET-USER-PROFILE': {
+            return {...state, profile: action.payload.profile};
         }
         default:
             return state;

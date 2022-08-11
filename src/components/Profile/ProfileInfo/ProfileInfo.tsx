@@ -1,8 +1,11 @@
-import React from 'react';
+import React, {FC} from 'react';
 import s from './ProfileInfo.module.css';
 import profileHeader from '../../../assets/images/profileHeader.png'
+import {profileUserType} from '../../../redux/profile-reducer';
 
-export const ProfileInfo = () => {
+type ProfileInfoPropsType = profileUserType
+
+export const ProfileInfo: FC<ProfileInfoPropsType> = (props) => {
     return (
         <div>
             <div className={s.header}>
@@ -12,7 +15,9 @@ export const ProfileInfo = () => {
                 />
             </div>
             <div>
-                ava + description
+                <img src={props.photos.large ? props.photos.large : ''}
+                alt='user avatar'/>
+                <div>{`Обо мне: ${props.aboutMe}`}</div>
             </div>
         </div>
     );

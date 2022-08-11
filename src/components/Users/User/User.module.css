@@ -50,6 +50,11 @@
     font-weight: bold;
     color: #4C5B99;
     margin-bottom: 10px;
+
+}
+
+.name a {
+    text-decoration: none;
 }
 
 .locationSide {
