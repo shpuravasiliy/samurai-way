@@ -33,6 +33,7 @@ const Users: FC<UsersPresentPropsType> = (props) => {
                 {showPages.map(p => <span
                     className={`${props.currentPage === p ? style.selectedPage : ''} ${style.pageNumber}`}
                     onClick={() => onPageChanged(p)}
+                    key={p}
                 >{p} </span>)}
             </div>
             <div>{props.users.map(u => <User
