@@ -1,6 +1,6 @@
 import {connect} from 'react-redux';
 import Sidebar from './Sidebar';
-import {sendMessageAC, UpdateNewMessageBodyAC} from '../../../redux/dialogs-reducer';
+import {sendMessage, updateNewMessageBody} from '../../../redux/dialogs-reducer';
 import {AppStateType} from '../../../redux/redux-store';
 import {Dispatch} from 'redux';
 import {initialSidebarStateType} from '../../../redux/sidebar-reducer';
@@ -18,10 +18,10 @@ const mapStateToProps = (state: AppStateType): mapStateToPropsType => {
 const mapDispatchToProps = (dispatch: Dispatch): mapDispatchToPropsType => {
     return {
         sendMessage: () => {
-            dispatch(sendMessageAC());
+            dispatch(sendMessage());
         },
         updateNewMessageBody: (newMessageBody: string) => {
-            dispatch(UpdateNewMessageBodyAC(newMessageBody));
+            dispatch(updateNewMessageBody(newMessageBody));
         },
     }
 }

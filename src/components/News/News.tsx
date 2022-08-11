@@ -2,7 +2,6 @@ import React, {ChangeEvent, useEffect, useState} from 'react';
 import axios from 'axios';
 
 const News = () => {
-
     const myID = 857468;
 
     const [myData, setMyData] = useState([])
@@ -26,7 +25,6 @@ const News = () => {
                 )
             })
     }, [])
-
 
     const onChangeInputHandler = (e: ChangeEvent<HTMLInputElement>) => {
         setInputValue(e.currentTarget.value)

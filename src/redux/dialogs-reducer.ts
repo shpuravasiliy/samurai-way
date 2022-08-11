@@ -53,17 +53,17 @@ const initialState: DialogsInitialStateType = {
     newMessageBody: '',
 }
 
-export type sendMessageACType = ReturnType<typeof sendMessageAC>
-export type UpdateNewMessageBodyACType = ReturnType<typeof UpdateNewMessageBodyAC>
+export type sendMessageACType = ReturnType<typeof sendMessage>
+export type UpdateNewMessageBodyACType = ReturnType<typeof updateNewMessageBody>
 
 type ActionTypes = sendMessageACType | UpdateNewMessageBodyACType
 
-export const sendMessageAC = () => {
+export const sendMessage = () => {
     return {
         type: 'ADD_MESSAGE',
     } as const
 }
-export const UpdateNewMessageBodyAC = (newMessage: string) => {
+export const updateNewMessageBody = (newMessage: string) => {
     return {
         type: 'UPDATE_NEW_MESSAGE_TEXT',
         newMessage

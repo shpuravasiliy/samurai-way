@@ -30,17 +30,17 @@ const initialState: ProfileInitialStateType = {
     },
 }
 
-export type AddPostACType = ReturnType<typeof addPostAC>
-export type UpdateNewPostTextACType = ReturnType<typeof UpdateNewPostTextAC>
+export type AddPostACType = ReturnType<typeof addPost>
+export type UpdateNewPostTextACType = ReturnType<typeof updateNewPostText>
 
 type ActionsType = AddPostACType | UpdateNewPostTextACType
 
-export const addPostAC = () => {
+export const addPost = () => {
     return {
         type: 'ADD_POST'
     } as const
 }
-export const UpdateNewPostTextAC = (postMessage: string) => {
+export const updateNewPostText = (postMessage: string) => {
     return {
         type: 'UPDATE_NEW_POST_TEXT',
         postMessage

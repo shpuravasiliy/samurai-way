@@ -6,12 +6,12 @@ import {DialogsPropsType} from './DialogsContainer';
 
 export const Dialogs: React.FC<DialogsPropsType> = (props) => {
 
-    const viewDialogs = props.dialogsPage.dialogs.map(d => <DialogItem
+    const viewDialogs = props.dialogs.map(d => <DialogItem
         key={d.id}
         id={d.id}
         name={d.name}
     />);
-    const viewMessages = props.dialogsPage.messages.map(m => <Message
+    const viewMessages = props.messages.map(m => <Message
         key={m.id}
         id={m.id}
         message={m.message}
@@ -34,7 +34,7 @@ export const Dialogs: React.FC<DialogsPropsType> = (props) => {
             </div>
             <div className={s.addMessage}>
                 <textarea
-                    value={props.dialogsPage.newMessageBody}
+                    value={props.newMessageBody}
                     cols={30}
                     rows={1}
                     placeholder={'Type your message'}

@@ -10,7 +10,6 @@ type UsersAPIPropsType = {
 
 type UsersPresentPropsType = UsersPropsType & UsersAPIPropsType
 
-
 const Users: FC<UsersPresentPropsType> = (props) => {
 
     const onClickButtonHandler = () => {
