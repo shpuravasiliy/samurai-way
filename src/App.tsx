@@ -8,12 +8,12 @@ import News from './components/News/News';
 import Music from './components/Music/Music';
 import Settings from './components/Settings/Settings';
 import {DialogsContainer} from './components/Dialogs/DialogsContainer';
-import {UsersContainer} from './components/Users/UsersContainer';
+import UsersContainer from './components/Users/UsersContainer';
 
 const App = () => {
     const dialogs = () => <DialogsContainer/>;
-    const profile = () => <Profile />;
-    const users = () => <UsersContainer />;
+    const profile = () => <Profile/>;
+    const users = () => <UsersContainer/>;
     const news = () => <News/>;
     const music = () => <Music/>;
     const settings = () => <Settings/>;

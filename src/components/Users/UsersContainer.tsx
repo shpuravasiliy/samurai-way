@@ -1,15 +1,19 @@
 import {connect} from 'react-redux';
-import Users from './Users';
 import {Dispatch} from 'redux';
 import {
     followAC,
-    setCurrentPageAC, setTotalUsersCountAC,
+    ServerResponseUsersType,
+    setCurrentPageAC,
+    setTotalUsersCountAC,
     setUsersAC,
     unfollowAC,
     UsersInitialStateType,
     userType
 } from '../../redux/users-reducer';
 import {AppStateType} from '../../redux/redux-store';
+import React from 'react';
+import axios from 'axios';
+import Users from './Users';
 
 type mapStateToPropsType = UsersInitialStateType
 type mapDispatchToPropsType = {
@@ -21,6 +25,50 @@ type mapDispatchToPropsType = {
 }
 
 export type UsersPropsType = mapStateToPropsType & mapDispatchToPropsType;
+
+class UsersContainer extends React.Component<UsersPropsType> {
+
+    onClickHandler = () => {
+        // axios
+        //     .get<ServerResponseUsersType>(`https://social-network.samuraijs.com/api/1.0/users?count=${this.props.pageSize}&page=${this.props.currentPage}`)
+        //     .then((res) => {
+        //         this.props.setUsers(res.data.items as userType[]);
+        //     })
+        this.onPageChanged(this.props.currentPage + 1)
+    };
+
+    componentDidMount() {
+        axios
+            .get<ServerResponseUsersType>(`https://social-network.samuraijs.com/api/1.0/users?count=${this.props.pageSize}&page=${this.props.currentPage}`)
+            .then((res) => {
+                this.props.setUsers(res.data.items as userType[]);
+                this.props.setTotalUsersCount(res.data.totalCount);
+            })
+    }
+
+    componentWillUnmount() {
+        this.props.setUsers([])
+
+    }
+
+    onPageChanged = (pageNumber: number) => {
+        this.props.setCurrentPage(pageNumber);
+        axios
+            .get(`https://social-network.samuraijs.com/api/1.0/users?count=${this.props.pageSize}&page=${pageNumber}`)
+            .then((res) => {
+                this.props.setUsers(res.data.items as userType[])
+            })
+    }
+
+    render() {
+        return (
+            <Users {...this.props}
+                   changePageNumber={this.onPageChanged}
+                   onClickButtonHandler={this.onClickHandler}
+            />
+        );
+    }
+}
 
 const mapStateToProps = (state: AppStateType): mapStateToPropsType => {
     return {
@@ -37,4 +85,4 @@ const mapDispatchToProps = (dispatch: Dispatch): mapDispatchToPropsType => {
     }
 }
 
-export const UsersContainer = connect(mapStateToProps, mapDispatchToProps)(Users)
+export default connect(mapStateToProps, mapDispatchToProps)(UsersContainer)
