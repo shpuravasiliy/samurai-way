@@ -23,4 +23,9 @@ const reducers = combineReducers({
     usersPage: usersReducer,
 });
 
+
+
 export const store = createStore(reducers, composeEnhancers())
+
+//@ts-ignore
+window.store = store

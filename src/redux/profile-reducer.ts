@@ -1,18 +1,19 @@
 import {PostPropsType} from '../components/Profile/MyPosts/Post/Post';
 import {MyPostsStateType} from '../components/Profile/MyPosts/MyPosts';
 
+export type contactsProps = {
+    facebook: stringOrNullType,
+    website: stringOrNullType,
+    vk: stringOrNullType,
+    twitter: stringOrNullType,
+    instagram: stringOrNullType,
+    youtube: stringOrNullType,
+    github: stringOrNullType,
+    mainLink: stringOrNullType
+}
 export type profileUserType = {
     aboutMe: stringOrNullType,
-    contacts: {
-        facebook: stringOrNullType,
-        website: stringOrNullType,
-        vk: stringOrNullType,
-        twitter: stringOrNullType,
-        instagram: stringOrNullType,
-        youtube: stringOrNullType,
-        github: stringOrNullType,
-        mainLink: stringOrNullType
-    },
+    contacts: contactsProps,
     lookingForAJob: boolean,
     lookingForAJobDescription: stringOrNullType,
     fullName: string,

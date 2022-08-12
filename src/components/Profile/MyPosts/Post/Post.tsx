@@ -6,6 +6,7 @@ export type PostPropsType = {
     id: string
     message: string
     likesCount: number
+    avatarImg?: string | null
 }
 
 const Post: React.FC<PostPropsType> = (props) => {
@@ -13,8 +14,8 @@ const Post: React.FC<PostPropsType> = (props) => {
     return (
         <div className={s.item}>
             <img
-                src={defaultUserImage}
-                alt=""
+                src={props.avatarImg ? props.avatarImg : defaultUserImage}
+                alt="user avatar"
             />
             {props.message}
             <div>

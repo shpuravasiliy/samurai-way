@@ -2,5 +2,53 @@
     display: flex;
     width: 100%;
     justify-content: center;
-    /*height: 125%;*/
+}
+
+.mainBlock {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    position: relative;
+    top: -100px;
+    /*margin-top: 15px;*/
+    /*display: flex;*/
+    /*gap: 10px;*/
+    /*border: 1px solid darkgrey;*/
+    /*border-radius: 5px;*/
+}
+
+.description {
+    /*display: flex;*/
+    position: relative;
+    top: 100px;
+    gap: 10px;
+    width: 100%;
+}
+
+.avatarImg {
+    /*box-shadow: 0 0 0 20px white;*/
+    width: 150px;
+    /*height: 100px;*/
+    /*margin: 15px;*/
+    border-radius: 50%;
+    border: 10px solid white;
+}
+
+.name {
+    font-size: 24px;
+    color: #27aae1;
+    font-weight: 500;
+    line-height: 1.1;
+}
+
+.about {
+    padding: 10px 0 10px 10px;
+    border: 1px solid darkgrey;
+    border-radius: 10px;
+}
+
+.contacts {
+    padding: 10px 0 10px 10px;
+    border: 1px solid darkgrey;
+    border-radius: 10px;
 }

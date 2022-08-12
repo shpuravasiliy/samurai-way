@@ -2,6 +2,7 @@ import React, {ChangeEvent} from 'react';
 import s from './MyPosts.module.css';
 import Post, {PostPropsType} from './Post/Post';
 import {MyPostsType} from './MyPostsContainer';
+import avatarPlaceholder from '../../../assets/images/avatar.png'
 
 export type MyPostsStateType = {
     posts: PostPropsType[]
@@ -22,6 +23,7 @@ const MyPosts: React.FC<MyPostsType> = (props) => {
         id={p.id}
         message={p.message}
         likesCount={p.likesCount}
+        avatarImg={props.profile.photos?.small ? props.profile.photos.small : avatarPlaceholder}
     />);
 
     return (

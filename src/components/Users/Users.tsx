@@ -40,7 +40,7 @@ const Users: FC<UsersPresentPropsType> = (props) => {
                 follow={props.follow}
                 unfollow={props.unfollow} {...u}/>)}</div>
             <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
-                <button onClick={onClickButtonHandler}>Show more</button>
+                <button onClick={onClickButtonHandler}>Show next page</button>
             </div>
         </div>
     );
