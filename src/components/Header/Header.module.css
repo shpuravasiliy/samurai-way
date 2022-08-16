@@ -2,9 +2,19 @@
     grid-area: header;
     background-color: cadetblue;
     display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0 10px 0 10px;
 }
 .header img {
     width: 50px;
-    align-self: center;
-    padding-left: 10px
+}
+
+.loginBlock {
+
+}
+
+.loginBlock a {
+    color: white;
+    text-decoration: none;
 }
