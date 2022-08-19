@@ -7,6 +7,7 @@ import {NavLink} from 'react-router-dom';
 type UserPropsType = userType & {
     follow: (userID: number) => void
     unfollow: (userID: number) => void
+    followingInProgress: number[]
 }
 
 const User: React.FC<UserPropsType> = ({
@@ -16,7 +17,8 @@ const User: React.FC<UserPropsType> = ({
                                            followed,
                                            follow,
                                            unfollow,
-                                           name: fullName
+                                           name: fullName,
+                                           followingInProgress
                                        }) => {
 
     const onClickHandler = () => {
@@ -34,6 +36,7 @@ const User: React.FC<UserPropsType> = ({
                     />
                 </NavLink>
                 <button
+                    disabled={followingInProgress.some(f => f === id)}
                     className={style.button}
                     onClick={onClickHandler}
                 >{followed ? 'Unfollow' : 'Follow'}</button>

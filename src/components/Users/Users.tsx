@@ -7,6 +7,8 @@ import {usersAPI} from '../../api/api';
 type UsersAPIPropsType = {
     changePageNumber: (pageNumber: number) => void
     onClickButtonHandler: () => void
+    toggleFollowingInProgress: (isFetching: boolean, userID: number) => void
+
 }
 
 type UsersPresentPropsType = UsersPropsType & UsersAPIPropsType
@@ -21,15 +23,19 @@ const Users: FC<UsersPresentPropsType> = (props) => {
     }
 
     const followHandler = (userId: number) => {
+        props.toggleFollowingInProgress(true, userId);
         usersAPI.follow(userId)
             .then((res) => {
                 res.resultCode === 0 && props.follow(userId)
+                props.toggleFollowingInProgress(false, userId)
             })
     }
     const unfollowHandler = (userId: number) => {
+        props.toggleFollowingInProgress(true, userId)
         usersAPI.unfollow(userId)
             .then((res) => {
                 res.resultCode === 0 && props.unfollow(userId)
+                props.toggleFollowingInProgress(false, userId)
             })
     }
 
@@ -53,6 +59,7 @@ const Users: FC<UsersPresentPropsType> = (props) => {
                 key={u.id}
                 follow={followHandler}
                 unfollow={unfollowHandler}
+                followingInProgress={props.followingInProgress}
                 {...u}/>)}</div>
             <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                 <button onClick={onClickButtonHandler}>Show next page</button>
