@@ -19,6 +19,7 @@
     width: max-content;
     margin: auto;
     color: white;
+    cursor: pointer;
 }
 
 .avatarImg {

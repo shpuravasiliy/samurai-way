@@ -2,17 +2,11 @@ import React, {FC} from 'react';
 import {UsersPropsType} from './UsersContainer';
 import User from './User/User';
 import style from './Users.module.css'
-import axios from 'axios';
+import {usersAPI} from '../../api/api';
 
 type UsersAPIPropsType = {
     changePageNumber: (pageNumber: number) => void
     onClickButtonHandler: () => void
-}
-
-type ResponseType<T = {}> = {
-    resultCode: number
-    messages: string[],
-    data: T
 }
 
 type UsersPresentPropsType = UsersPropsType & UsersAPIPropsType
@@ -27,26 +21,15 @@ const Users: FC<UsersPresentPropsType> = (props) => {
     }
 
     const followHandler = (userId: number) => {
-        axios.post<ResponseType>(`https://social-network.samuraijs.com/api/1.0/follow/${userId}`, {}, {
-            withCredentials: true,
-            headers: {
-                'API-KEY': '45c43e5d-ea43-44f4-ad72-48e4a0546faa',
-            },
-        })
+        usersAPI.follow(userId)
             .then((res) => {
-                res.data.resultCode === 0 && props.follow(userId)
+                res.resultCode === 0 && props.follow(userId)
             })
     }
-
     const unfollowHandler = (userId: number) => {
-        axios.delete<ResponseType>(`https://social-network.samuraijs.com/api/1.0/follow/${userId}`, {
-            withCredentials: true,
-            headers: {
-                'API-KEY': '45c43e5d-ea43-44f4-ad72-48e4a0546faa',
-            },
-        })
+        usersAPI.unfollow(userId)
             .then((res) => {
-                res.data.resultCode === 0 && props.unfollow(userId)
+                res.resultCode === 0 && props.unfollow(userId)
             })
     }
 

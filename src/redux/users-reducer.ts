@@ -8,13 +8,6 @@ export type userType = {
     status: null | string
     followed: boolean
 }
-
-export type ServerResponseUsersType = {
-    items: userType[]
-    totalCount: number
-    error: boolean
-}
-
 export type UsersInitialStateType = {
     users: userType[]
     pageSize: number

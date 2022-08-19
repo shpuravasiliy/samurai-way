@@ -1,16 +1,10 @@
 import React from 'react';
 import Header from './Header';
-import axios from 'axios';
 import {initialStateType, setAuthUserData} from '../../redux/auth-reducer';
 import {AppStateType} from '../../redux/redux-store';
 import {connect} from 'react-redux';
 import {profileUserType, setUserProfile} from '../../redux/profile-reducer';
-
-type ServerResponseType = {
-    resultCode: number
-    messages: Array<string>,
-    data: initialStateType
-}
+import {authAPI, profileAPI} from '../../api/api';
 
 type mapStateToPropsType = initialStateType
 type mapDispatchToPropsType = {
@@ -23,18 +17,13 @@ export type HeaderContainerPropsType = mapStateToPropsType & mapDispatchToPropsT
 class HeaderContainer extends React.Component<HeaderContainerPropsType> {
 
     componentDidMount() {
-        // this.props.toggleIsFetching(true);
-        axios
-            .get<ServerResponseType>(`https://social-network.samuraijs.com/api/1.0/auth/me`, {
-                withCredentials: true,
-            })
+        authAPI.getAuthStatus()
             .then((res) => {
-                // console.log(res.data);
-                res.data.resultCode === 0 ? this.props.setAuthUserData(res.data.data) : new Error('You not login yet');
-                return axios.get<profileUserType>(`https://social-network.samuraijs.com/api/1.0/profile/` + res.data.data.id)
+                res.resultCode === 0 ? this.props.setAuthUserData(res.data) : new Error('You not login yet');
+                return profileAPI.getProfile(res.data.id)
             })
             .then(res => {
-                this.props.setUserProfile(res.data)
+                this.props.setUserProfile(res)
             })
             .catch(rej => console.log(rej))
     }

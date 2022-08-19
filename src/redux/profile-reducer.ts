@@ -1,6 +1,7 @@
 import {PostPropsType} from '../components/Profile/MyPosts/Post/Post';
 import {MyPostsStateType} from '../components/Profile/MyPosts/MyPosts';
 
+type stringOrNullType = string | null
 export type contactsProps = {
     facebook: stringOrNullType,
     website: stringOrNullType,
@@ -23,12 +24,11 @@ export type profileUserType = {
         large: stringOrNullType,
     },
 }
+
 export type ProfileInitialStateType = {
     myPosts: MyPostsStateType
     profile: profileUserType
 }
-
-type stringOrNullType = string | null
 
 const initialState: ProfileInitialStateType = {
     myPosts: {

@@ -1,6 +1,5 @@
 import React from 'react';
 import './App.css';
-import Navbar from './components/Navbar/Navbar';
 import {BrowserRouter, Route} from 'react-router-dom';
 import News from './components/News/News';
 import Music from './components/Music/Music';
@@ -9,6 +8,7 @@ import {DialogsContainer} from './components/Dialogs/DialogsContainer';
 import UsersContainer from './components/Users/UsersContainer';
 import ProfileContainer from './components/Profile/ProfileContainer';
 import HeaderContainer from './components/Header/HeaderContainer';
+import NavbarContainer from './components/Navbar/NavbarContainer';
 
 const App = () => {
     const dialogs = () => <DialogsContainer/>;
@@ -23,7 +23,7 @@ const App = () => {
             <div className="placeholder">
                 <div className="app-wrapper">
                     <HeaderContainer/>
-                    <Navbar/>
+                    <NavbarContainer/>
                     <div className="app-wrapper-content">
                         <Route path='/dialogs' render={dialogs} />
                         <Route path='/profile/:userId?' render={profile}/>
