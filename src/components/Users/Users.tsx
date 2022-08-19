@@ -2,10 +2,17 @@ import React, {FC} from 'react';
 import {UsersPropsType} from './UsersContainer';
 import User from './User/User';
 import style from './Users.module.css'
+import axios from 'axios';
 
 type UsersAPIPropsType = {
     changePageNumber: (pageNumber: number) => void
     onClickButtonHandler: () => void
+}
+
+type ResponseType<T = {}> = {
+    resultCode: number
+    messages: string[],
+    data: T
 }
 
 type UsersPresentPropsType = UsersPropsType & UsersAPIPropsType
@@ -17,6 +24,30 @@ const Users: FC<UsersPresentPropsType> = (props) => {
     }
     const onPageChanged = (pageNumber: number) => {
         props.changePageNumber(pageNumber);
+    }
+
+    const followHandler = (userId: number) => {
+        axios.post<ResponseType>(`https://social-network.samuraijs.com/api/1.0/follow/${userId}`, {}, {
+            withCredentials: true,
+            headers: {
+                'API-KEY': '45c43e5d-ea43-44f4-ad72-48e4a0546faa',
+            },
+        })
+            .then((res) => {
+                res.data.resultCode === 0 && props.follow(userId)
+            })
+    }
+
+    const unfollowHandler = (userId: number) => {
+        axios.delete<ResponseType>(`https://social-network.samuraijs.com/api/1.0/follow/${userId}`, {
+            withCredentials: true,
+            headers: {
+                'API-KEY': '45c43e5d-ea43-44f4-ad72-48e4a0546faa',
+            },
+        })
+            .then((res) => {
+                res.data.resultCode === 0 && props.unfollow(userId)
+            })
     }
 
     const pagesCount = Math.ceil(props.totalUsersCount / props.pageSize);
@@ -37,8 +68,9 @@ const Users: FC<UsersPresentPropsType> = (props) => {
             </div>
             <div>{props.users.map(u => <User
                 key={u.id}
-                follow={props.follow}
-                unfollow={props.unfollow} {...u}/>)}</div>
+                follow={followHandler}
+                unfollow={unfollowHandler}
+                {...u}/>)}</div>
             <div style={{display: 'flex', justifyContent: 'center', alignItems: 'center'}}>
                 <button onClick={onClickButtonHandler}>Show next page</button>
             </div>
