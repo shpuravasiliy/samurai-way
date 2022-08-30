@@ -23,20 +23,10 @@ const Users: FC<UsersPresentPropsType> = (props) => {
     }
 
     const followHandler = (userId: number) => {
-        props.toggleFollowingInProgress(true, userId);
-        usersAPI.follow(userId)
-            .then((res) => {
-                res.resultCode === 0 && props.follow(userId)
-                props.toggleFollowingInProgress(false, userId)
-            })
+        props.follow(userId)
     }
     const unfollowHandler = (userId: number) => {
-        props.toggleFollowingInProgress(true, userId)
-        usersAPI.unfollow(userId)
-            .then((res) => {
-                res.resultCode === 0 && props.unfollow(userId)
-                props.toggleFollowingInProgress(false, userId)
-            })
+        props.unfollow(userId)
     }
 
     const pagesCount = Math.ceil(props.totalUsersCount / props.pageSize);

@@ -1,5 +1,8 @@
 import {PostPropsType} from '../components/Profile/MyPosts/Post/Post';
 import {MyPostsStateType} from '../components/Profile/MyPosts/MyPosts';
+import {AnyAction, Dispatch} from 'redux';
+import {authAPI, profileAPI} from '../api/api';
+import {setAuthUserData} from './auth-reducer';
 
 type stringOrNullType = string | null
 export type contactsProps = {
@@ -80,6 +83,13 @@ export const setUserProfile = (profile: profileUserType) => {
             profile
         }
     } as const
+}
+
+export const getProfile = (userId: number) => (dispatch: Dispatch<AnyAction>) => {
+    profileAPI.getProfile(userId)
+        .then((res) => {
+            dispatch(setUserProfile(res));
+        })
 }
 
 const profileReducer = (state: ProfileInitialStateType = initialState, action: ActionsType): ProfileInitialStateType => {

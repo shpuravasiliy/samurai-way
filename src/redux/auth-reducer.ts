@@ -1,3 +1,7 @@
+import {Dispatch} from 'redux';
+import {authAPI} from '../api/api';
+import {getProfile} from './profile-reducer';
+
 export type initialStateType = {
     id: number | null,
     login: string | null
@@ -23,6 +27,15 @@ export const setAuthUserData = ({id, email, login}: initialStateType) => {
             id, email, login,
         }
     } as const
+}
+
+export const getAuthStatus = () => (dispatch: Dispatch) => {
+    authAPI.getAuthStatus()
+        .then((res) => {
+            res.resultCode === 0 ? dispatch(setAuthUserData(res.data)) : new Error('You not login yet');
+            res.data.id &&
+            getProfile(res.data.id)
+        })
 }
 
 const authReducer = (state: initialStateType = initialState, action: ActionsType): initialStateType => {
