@@ -1,8 +1,7 @@
 import {PostPropsType} from '../components/Profile/MyPosts/Post/Post';
 import {MyPostsStateType} from '../components/Profile/MyPosts/MyPosts';
 import {AnyAction, Dispatch} from 'redux';
-import {authAPI, profileAPI} from '../api/api';
-import {setAuthUserData} from './auth-reducer';
+import {profileAPI} from '../api/api';
 
 type stringOrNullType = string | null
 export type contactsProps = {

@@ -12,9 +12,11 @@ import {
     userType
 } from '../../redux/users-reducer';
 import {AppStateType} from '../../redux/redux-store';
-import React from 'react';
+import React, {FC} from 'react';
 import Users from './Users';
 import Preloader from '../common/Preloader/Preloader';
+import withAuthentication from '../HOC/WithAuthentication';
+import {compose} from 'redux';
 
 type mapStateToPropsType = UsersInitialStateType
 type mapDispatchToPropsType = {
@@ -66,7 +68,7 @@ const mapStateToProps = (state: AppStateType): mapStateToPropsType => {
     }
 }
 
-export default connect(mapStateToProps, {
+const connector = connect(mapStateToProps, {
     follow,
     unfollow,
     setUsers,
@@ -75,4 +77,6 @@ export default connect(mapStateToProps, {
     toggleIsFetching,
     toggleFollowingInProgress,
     getUsersTC
-})(UsersContainer)
+})
+
+export default compose<FC>(connector, withAuthentication)(UsersContainer)

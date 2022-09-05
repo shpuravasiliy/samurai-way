@@ -23,6 +23,7 @@ export const Dialogs: React.FC<DialogsPropsType> = (props) => {
     const textareaOnChangeHandler = (e: ChangeEvent<HTMLTextAreaElement>) => {
         props.updateNewMessageBody(e.currentTarget.value);
     }
+    // if (!props.isAuth) return <Redirect to={'/login'}/>
 
     return (
         <div className={s.dialogs}>

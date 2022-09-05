@@ -2,6 +2,9 @@ import {DialogsInitialStateType, sendMessage, updateNewMessageBody} from '../../
 import {Dialogs} from './Dialogs';
 import {connect} from 'react-redux';
 import {AppStateType} from '../../redux/redux-store';
+import withAuthentication from '../HOC/WithAuthentication';
+import {compose} from 'redux';
+import {FC} from 'react';
 
 type mapStateToPropsType = DialogsInitialStateType
 type mapDispatchToPropsType = {
@@ -17,7 +20,6 @@ const mapStateToProps = (state: AppStateType): mapStateToPropsType => {
     }
 }
 
-export const DialogsContainer = connect(mapStateToProps, {
-    sendMessage,
-    updateNewMessageBody,
-})(Dialogs)
+const connector = connect(mapStateToProps, {sendMessage, updateNewMessageBody,})
+
+export default compose<FC>(connector, withAuthentication)(Dialogs)

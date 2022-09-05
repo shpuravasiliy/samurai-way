@@ -4,11 +4,12 @@ import {BrowserRouter, Route} from 'react-router-dom';
 import News from './components/News/News';
 import Music from './components/Music/Music';
 import Settings from './components/Settings/Settings';
-import {DialogsContainer} from './components/Dialogs/DialogsContainer';
+import DialogsContainer from './components/Dialogs/DialogsContainer';
 import UsersContainer from './components/Users/UsersContainer';
 import ProfileContainer from './components/Profile/ProfileContainer';
 import HeaderContainer from './components/Header/HeaderContainer';
 import NavbarContainer from './components/Navbar/NavbarContainer';
+import Login from './components/Login/Login';
 
 const App = () => {
     const dialogs = () => <DialogsContainer/>;
@@ -17,6 +18,7 @@ const App = () => {
     const news = () => <News/>;
     const music = () => <Music/>;
     const settings = () => <Settings/>;
+    const login = () => <Login/>;
 
     return (
         <BrowserRouter>
@@ -31,6 +33,7 @@ const App = () => {
                         <Route path='/news' render={news}/>
                         <Route path='/music' render={music}/>
                         <Route path='/settings' render={settings}/>
+                        <Route path='/login' render={login}/>
                     </div>
                 </div>
             </div>
