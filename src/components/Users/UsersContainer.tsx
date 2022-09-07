@@ -15,7 +15,7 @@ import {AppStateType} from '../../redux/redux-store';
 import React, {FC} from 'react';
 import Users from './Users';
 import Preloader from '../common/Preloader/Preloader';
-import withAuthentication from '../HOC/WithAuthentication';
+import withAuthRedirect from '../HOC/WithAuthRedirect';
 import {compose} from 'redux';
 
 type mapStateToPropsType = UsersInitialStateType
@@ -79,4 +79,4 @@ const connector = connect(mapStateToProps, {
     getUsersTC
 })
 
-export default compose<FC>(connector, withAuthentication)(UsersContainer)
+export default compose<FC>(connector, withAuthRedirect)(UsersContainer)

@@ -2,7 +2,7 @@ import {DialogsInitialStateType, sendMessage, updateNewMessageBody} from '../../
 import {Dialogs} from './Dialogs';
 import {connect} from 'react-redux';
 import {AppStateType} from '../../redux/redux-store';
-import withAuthentication from '../HOC/WithAuthentication';
+import withAuthRedirect from '../HOC/WithAuthRedirect';
 import {compose} from 'redux';
 import {FC} from 'react';
 
@@ -22,4 +22,4 @@ const mapStateToProps = (state: AppStateType): mapStateToPropsType => {
 
 const connector = connect(mapStateToProps, {sendMessage, updateNewMessageBody,})
 
-export default compose<FC>(connector, withAuthentication)(Dialogs)
+export default compose<FC>(connector, withAuthRedirect)(Dialogs)

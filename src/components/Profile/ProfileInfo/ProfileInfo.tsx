@@ -3,12 +3,17 @@ import style from './ProfileInfo.module.css';
 import profileHeader from '../../../assets/images/profileHeader.png'
 import {contactsProps, profileUserType} from '../../../redux/profile-reducer';
 import avatarPlaceholder from '../../../assets/images/avatar.png'
+import ProfileStatus from '../ProfileStatus/ProfileStatus';
+import {ProfileUserPropsType} from '../ProfileContainer';
 
-type ProfileInfoPropsType = profileUserType
+type ProfileInfoPropsType = profileUserType & {
+    changeStatus: (newStatus: string) => void
+    getUserStatus: (userId: number) => void
+}
 
-export const ProfileInfo: FC<ProfileInfoPropsType> = (props) => {
+export const ProfileInfo: FC<ProfileUserPropsType> = (props) => {
+
     const placeholderProp = (prop: string | null): string => prop !== null ? prop : 'empty';
-
 
     const contactsPlaceholder = (obj: contactsProps | undefined) => {
         const result = []
@@ -42,6 +47,9 @@ export const ProfileInfo: FC<ProfileInfoPropsType> = (props) => {
                     <div className={style.name}>
                         <h3>{`${placeholderProp(props.fullName)}`}</h3>
                     </div>
+                    <>
+                    <ProfileStatus status={props.status} changeStatus={props.updateUserStatus} getStatus={() => props.getUserStatus(props.userId)}/>
+                    </>
                     {props.aboutMe && <div className={style.about}>{`About me: ${props.aboutMe}`}</div>}
                     {!!contacts.length && <div className={style.contacts}>{contacts}</div>}
                 </div>

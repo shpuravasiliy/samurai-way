@@ -3,7 +3,7 @@ import {MyPostsStateType} from '../components/Profile/MyPosts/MyPosts';
 import {AnyAction, Dispatch} from 'redux';
 import {profileAPI} from '../api/api';
 
-type stringOrNullType = string | null
+export type stringOrNullType = string | null
 export type contactsProps = {
     facebook: stringOrNullType,
     website: stringOrNullType,
@@ -25,7 +25,9 @@ export type profileUserType = {
         small: stringOrNullType,
         large: stringOrNullType,
     },
+    status: stringOrNullType
 }
+export type statusUserType = string
 
 export type ProfileInitialStateType = {
     myPosts: MyPostsStateType
@@ -61,8 +63,9 @@ const initialState: ProfileInitialStateType = {
 export type AddPostACType = ReturnType<typeof addPost>
 export type updateNewPostTextACType = ReturnType<typeof updateNewPostText>
 export type setUserProfileACType = ReturnType<typeof setUserProfile>
+export type setUserStatusACType = ReturnType<typeof setUserStatus>
 
-type ActionsType = AddPostACType | updateNewPostTextACType | setUserProfileACType
+type ActionsType = AddPostACType | updateNewPostTextACType | setUserProfileACType | setUserStatusACType
 
 export const addPost = () => {
     return {
@@ -83,11 +86,31 @@ export const setUserProfile = (profile: profileUserType) => {
         }
     } as const
 }
+export const setUserStatus = (status: stringOrNullType) => {
+    return {
+        type: 'SET-USER-STATUS',
+        payload: {
+            status
+        }
+    } as const
+}
 
 export const getProfile = (userId: number) => (dispatch: Dispatch<AnyAction>) => {
     profileAPI.getProfile(userId)
+        .then((res) => dispatch(setUserProfile(res)))
+        .then(res => profileAPI.getStatus(userId))
+        .then(res => dispatch(setUserStatus(res)))
+}
+export const getUserStatus = (userId: number) => (dispatch: Dispatch<AnyAction>) => {
+    profileAPI.getStatus(userId)
         .then((res) => {
-            dispatch(setUserProfile(res));
+            dispatch(setUserStatus(res));
+        })
+}
+export const updateUserStatus = (status: stringOrNullType) => (dispatch: Dispatch<AnyAction>) => {
+    profileAPI.updateStatus(status)
+        .then((res) => {
+            dispatch(setUserStatus(status));
         })
 }
 
@@ -99,13 +122,16 @@ const profileReducer = (state: ProfileInitialStateType = initialState, action: A
                 message: state.myPosts.newMessage,
                 likesCount: 0
             }
-            return {...state, myPosts: {...state.myPosts, newMessage: '', posts: [...state.myPosts.posts, newPost]}, };
+            return {...state, myPosts: {...state.myPosts, newMessage: '', posts: [...state.myPosts.posts, newPost]},};
         }
         case 'UPDATE_NEW_POST_TEXT': {
             return {...state, myPosts: {...state.myPosts, newMessage: action.postMessage}};
         }
         case 'SET-USER-PROFILE': {
-            return {...state, profile: action.payload.profile};
+            return {...state, profile: {...action.payload.profile, status: null}};
+        }
+        case 'SET-USER-STATUS': {
+            return {...state, profile: {...state.profile, status: action.payload.status}};
         }
         default:
             return state;
