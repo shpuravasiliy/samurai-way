@@ -2,14 +2,14 @@ import React, {Component} from 'react';
 import Navbar from './Navbar';
 import {connect} from 'react-redux';
 import {AppStateType} from '../../redux/redux-store';
-import {profileUserType, setUserProfile} from '../../redux/profile-reducer';
+import {getProfile} from '../../redux/profile-reducer';
 
 type mapStateToProps = {
     isAuth: boolean
     userId: number | null
 }
 type mapDispatchToProps = {
-    setUserProfile: (profile: profileUserType) => void
+    getProfile: (userId: number) => void
 }
 export type NavbarContainerType = mapStateToProps & mapDispatchToProps
 
@@ -26,4 +26,4 @@ const mapStateToProps = (state: AppStateType): mapStateToProps => ({
 })
 
 
-export default connect(mapStateToProps, {setUserProfile})(NavbarContainer);
+export default connect(mapStateToProps, {getProfile})(NavbarContainer);

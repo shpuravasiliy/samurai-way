@@ -2,7 +2,10 @@ import {PostPropsType} from '../components/Profile/MyPosts/Post/Post';
 import {MyPostsStateType} from '../components/Profile/MyPosts/MyPosts';
 import {AnyAction, Dispatch} from 'redux';
 import {profileAPI} from '../api/api';
+import {ThunkAction, ThunkDispatch} from 'redux-thunk';
+import {AppStateType} from './redux-store';
 
+export type RequestStatusType = 'idle' | 'loading' | 'succeeded' | 'failed'
 export type stringOrNullType = string | null
 export type contactsProps = {
     facebook: stringOrNullType,
@@ -15,17 +18,18 @@ export type contactsProps = {
     mainLink: stringOrNullType
 }
 export type profileUserType = {
-    aboutMe: stringOrNullType,
-    contacts: contactsProps,
-    lookingForAJob: boolean,
-    lookingForAJobDescription: stringOrNullType,
-    fullName: string,
-    userId: number,
+    aboutMe: stringOrNullType
+    contacts: contactsProps
+    lookingForAJob: boolean
+    lookingForAJobDescription: stringOrNullType
+    fullName: string
+    userId: number
     photos: {
         small: stringOrNullType,
         large: stringOrNullType,
-    },
+    }
     status: stringOrNullType
+    entityStatus: RequestStatusType
 }
 export type statusUserType = string
 
@@ -64,8 +68,15 @@ export type AddPostACType = ReturnType<typeof addPost>
 export type updateNewPostTextACType = ReturnType<typeof updateNewPostText>
 export type setUserProfileACType = ReturnType<typeof setUserProfile>
 export type setUserStatusACType = ReturnType<typeof setUserStatus>
+export type ChangeProfileEntityStatusACType = ReturnType<typeof changeProfileEntityStatusAC>
 
-type ActionsType = AddPostACType | updateNewPostTextACType | setUserProfileACType | setUserStatusACType
+export type ActionsType =
+    AddPostACType
+    | updateNewPostTextACType
+    | setUserProfileACType
+    | setUserStatusACType
+    | ChangeProfileEntityStatusACType
+
 
 export const addPost = () => {
     return {
@@ -94,18 +105,25 @@ export const setUserStatus = (status: stringOrNullType) => {
         }
     } as const
 }
+export const changeProfileEntityStatusAC = (entityStatus: RequestStatusType) => {
+    return {
+        type: 'CHANGE-PROFILE-ENTITY-STATUS',
+        payload: {
+            entityStatus
+        }
+    } as const
+}
 
-export const getProfile = (userId: number) => (dispatch: Dispatch<AnyAction>) => {
+export const getProfile = (userId: number): ThunkAction<void, AppStateType, unknown, AnyAction> => (dispatch: ThunkDispatch<AppStateType, unknown, AnyAction>) => {
+    dispatch(changeProfileEntityStatusAC('loading'))
     profileAPI.getProfile(userId)
         .then((res) => dispatch(setUserProfile(res)))
-        .then(res => profileAPI.getStatus(userId))
-        .then(res => dispatch(setUserStatus(res)))
+        .then(res => userId && dispatch(getUserStatus(userId)))
+        .then(res => dispatch(changeProfileEntityStatusAC('succeeded')))
 }
 export const getUserStatus = (userId: number) => (dispatch: Dispatch<AnyAction>) => {
     profileAPI.getStatus(userId)
-        .then((res) => {
-            dispatch(setUserStatus(res));
-        })
+        .then((res) => dispatch(setUserStatus(res)))
 }
 export const updateUserStatus = (status: stringOrNullType) => (dispatch: Dispatch<AnyAction>) => {
     profileAPI.updateStatus(status)
@@ -132,6 +150,9 @@ const profileReducer = (state: ProfileInitialStateType = initialState, action: A
         }
         case 'SET-USER-STATUS': {
             return {...state, profile: {...state.profile, status: action.payload.status}};
+        }
+        case 'CHANGE-PROFILE-ENTITY-STATUS': {
+            return {...state, profile: {...state.profile, entityStatus: action.payload.entityStatus}};
         }
         default:
             return state;

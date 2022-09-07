@@ -3,13 +3,11 @@ import s from './Navbar.module.css'
 import {NavLink} from 'react-router-dom';
 import SidebarContainer from './sidebar/SidebarContainer';
 import {NavbarContainerType} from './NavbarContainer';
-import {profileAPI} from '../../api/api';
 
-const Navbar: FC<NavbarContainerType> = ({isAuth, userId, setUserProfile}) => {
+const Navbar: FC<NavbarContainerType> = ({isAuth, userId, getProfile}) => {
 
     const profileOnClickHandler = () => {
-        isAuth && profileAPI.getProfile(userId)
-            .then(res => setUserProfile(res))
+        isAuth && userId && getProfile(userId)
     }
 
     return (

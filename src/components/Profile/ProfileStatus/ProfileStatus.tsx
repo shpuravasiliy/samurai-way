@@ -1,4 +1,4 @@
-import React, {ChangeEvent} from 'react';
+import React, {ChangeEvent, KeyboardEvent} from 'react';
 import {stringOrNullType} from '../../../redux/profile-reducer';
 
 type ProfileStatusPropsType = {
@@ -20,10 +20,6 @@ class ProfileStatus extends React.Component<ProfileStatusPropsType, ProfileStatu
         }
     }
 
-    componentDidMount() {
-        // this.props.getStatus()
-    }
-
     render() {
 
         const onDoubleClickHandler = () => {
@@ -33,24 +29,31 @@ class ProfileStatus extends React.Component<ProfileStatusPropsType, ProfileStatu
             }))
         };
         const onBlurHandler = () => {
+
             this.setState({
                 editMode: false
             })
             this.props.changeStatus(this.state.status)
         };
-        const onChangeInputHandler = (e: ChangeEvent<HTMLTextAreaElement>) => {
+        const onChangeInputHandler = (e: ChangeEvent<HTMLInputElement>) => {
             this.setState({
                 status: e.currentTarget.value
             });
         }
+
+        const onKeyDownHandler = (e: KeyboardEvent<HTMLInputElement>) => {
+            e.key === 'Enter' && onBlurHandler()
+        };
 
         return (
             <>{
                 this.state.editMode
                     ?
                     <div>
-                        <textarea
+                        <input
+                            type={'text'}
                             value={this.state.status ? this.state.status : ''}
+                            onKeyDown={onKeyDownHandler}
                             onBlur={onBlurHandler}
                             onChange={onChangeInputHandler}
                             autoFocus
@@ -58,7 +61,7 @@ class ProfileStatus extends React.Component<ProfileStatusPropsType, ProfileStatu
                     </div>
                     :
                     <div
-                        style={{width: '200px', height: '1rem', border: '1px solid'}}
+                        style={{width: '200px', height: '2rem', border: '1px solid'}}
                         onDoubleClick={onDoubleClickHandler}
                     >
                         <span>{this.props.status}</span>

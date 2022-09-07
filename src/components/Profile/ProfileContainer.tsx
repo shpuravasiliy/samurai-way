@@ -5,13 +5,15 @@ import {
     getProfile,
     getUserStatus,
     profileUserType,
-    setUserProfile, stringOrNullType,
+    setUserProfile,
+    stringOrNullType,
     updateUserStatus
 } from '../../redux/profile-reducer';
 import {AppStateType} from '../../redux/redux-store';
 import {RouteComponentProps, withRouter} from 'react-router-dom';
 import withAuthRedirect from '../HOC/WithAuthRedirect';
 import {compose} from 'redux';
+import Preloader from '../common/Preloader/Preloader';
 
 type mapStateToPropsType = profileUserType
 type mapDispatchToPropsType = {
@@ -29,13 +31,18 @@ type PropsType = RouteComponentProps<PathParamsType> & ProfileUserPropsType
 class ProfileContainer extends React.Component<PropsType> {
     componentDidMount() {
         // const userId = this.props.match.params.userId ? this.props.match.params.userId : this.props.userId ? this.props.userId : '2';
-        const userId = this.props.match.params.userId ? this.props.match.params.userId : this.props.userId ? this.props.userId : '2';
-        this.props.getProfile(+userId)
+        const userId = this.props.match.params.userId
+        userId && this.props.getProfile(+userId)
     }
 
     render() {
         return (
-            <Profile {...this.props}/>
+            <>
+                {this.props.entityStatus === 'loading' ?
+                    <Preloader/> :
+                    <Profile {...this.props}/>
+                }
+            </>
         )
     }
 }
