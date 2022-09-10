@@ -6,10 +6,10 @@ import avatarPlaceholder from '../../../assets/images/avatar.png'
 import ProfileStatus from '../ProfileStatus/ProfileStatus';
 import {ProfileUserPropsType} from '../ProfileContainer';
 
-type ProfileInfoPropsType = profileUserType & {
-    changeStatus: (newStatus: string) => void
-    getUserStatus: (userId: number) => void
-}
+// type ProfileInfoPropsType = profileUserType & {
+//     changeStatus: (newStatus: string) => void
+//     getUserStatus: (userId: number) => void
+// }
 
 export const ProfileInfo: FC<ProfileUserPropsType> = (props) => {
 

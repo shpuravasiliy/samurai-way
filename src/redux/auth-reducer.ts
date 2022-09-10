@@ -1,8 +1,9 @@
 import {AnyAction} from 'redux';
 import {authAPI} from '../api/api';
-import {changeProfileEntityStatusAC, getProfile, RequestStatusType} from './profile-reducer';
+import {getProfile, RequestStatusType} from './profile-reducer';
 import {ThunkDispatch} from 'redux-thunk';
 import {AppStateType} from './redux-store';
+import {LoginType} from '../components/Login/LoginForm/LoginForm';
 
 export type initialStateType = {
     id: number | null,
@@ -22,8 +23,9 @@ const initialState: initialStateType = {
 
 export type setAuthUserDataACType = ReturnType<typeof setAuthUserData>
 export type changeAuthEntityStatusACType = ReturnType<typeof changeAuthEntityStatus>
+export type changeAuthStatusACType = ReturnType<typeof changeAuthStatus>
 
-type ActionsType = setAuthUserDataACType | changeAuthEntityStatusACType
+type ActionsType = setAuthUserDataACType | changeAuthEntityStatusACType | changeAuthStatusACType
 
 export const setAuthUserData = ({id, email, login}: initialStateType) => {
     return {
@@ -39,6 +41,12 @@ export const changeAuthEntityStatus = (entityStatus: RequestStatusType) => {
         payload: {entityStatus}
     } as const
 }
+export const changeAuthStatus = (status: boolean) => {
+    return {
+        type: 'CHANGE-AUTH-STATUS',
+        payload: {status}
+    } as const
+}
 
 export const getAuthStatus = () => (dispatch: ThunkDispatch<AppStateType, unknown, AnyAction>) => {
     dispatch(changeAuthEntityStatus('loading'))
@@ -46,13 +54,30 @@ export const getAuthStatus = () => (dispatch: ThunkDispatch<AppStateType, unknow
         .then((res) => {
             if (res.resultCode === 0) {
                 dispatch(setAuthUserData(res.data))
-                dispatch(changeAuthEntityStatus('succeeded'))
+                dispatch(changeAuthStatus(true))
             } else {
                 new Error('You not login yet')
             }
             return res.data.id
         })
         .then((res) => res && dispatch(getProfile(res)))
+        .finally(() => dispatch(changeAuthEntityStatus('succeeded')))
+}
+export const login = (data: LoginType) => (dispatch: ThunkDispatch<AppStateType, unknown, AnyAction>) => {
+    authAPI.login(data)
+        .then(res => {
+            if (res.resultCode === 0) {
+                dispatch(getAuthStatus())
+            }
+        })
+}
+export const logout = () => (dispatch: ThunkDispatch<AppStateType, unknown, AnyAction>) => {
+    authAPI.logout()
+        .then(res => {
+            if (res.resultCode === 0) {
+                dispatch(changeAuthStatus(false))
+            }
+        })
 }
 
 const authReducer = (state: initialStateType = initialState, action: ActionsType): initialStateType => {
@@ -61,7 +86,12 @@ const authReducer = (state: initialStateType = initialState, action: ActionsType
             return {
                 ...state,
                 ...action.payload,
-                isAuth: true,
+            };
+        }
+        case 'CHANGE-AUTH-STATUS': {
+            return {
+                ...state,
+                isAuth: action.payload.status,
             };
         }
         case 'CHANGE-AUTH-ENTITY-STATUS': {

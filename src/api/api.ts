@@ -2,6 +2,7 @@ import axios from 'axios';
 import {userType} from '../redux/users-reducer';
 import {profileUserType, statusUserType, stringOrNullType} from '../redux/profile-reducer';
 import {initialStateType} from '../redux/auth-reducer';
+import {LoginType} from '../components/Login/LoginForm/LoginForm';
 
 type ResponseUserType = {
     items: userType[]
@@ -53,6 +54,14 @@ export const profileAPI = {
 export const authAPI = {
     getAuthStatus() {
         return instance.get<ResponseType<initialStateType>>(`auth/me`)
+            .then(res => res.data)
+    },
+    login(data: LoginType) {
+        return instance.post<ResponseType<{ userId: number }>>(`auth/login`, data)
+            .then(res => res.data)
+    },
+    logout() {
+        return instance.delete<ResponseType>(`auth/login`)
             .then(res => res.data)
     },
 }

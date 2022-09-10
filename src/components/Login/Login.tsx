@@ -1,20 +1,15 @@
-import React from 'react';
-import {Redirect} from 'react-router-dom';
+import React, {FC} from 'react';
+import {LoginForm} from './LoginForm/LoginForm';
+import {LoginContainerPropsType} from './LoginContainer';
 
-type LoginPropsType = {
-    isAuth: boolean
-}
+export type LoginPropsType = Omit<LoginContainerPropsType, 'isAuth'>
 
-const Login = ({isAuth}: LoginPropsType) => {
+const Login: FC<LoginPropsType> = (props) => {
     return (
-        <>
-            {
-                isAuth ? <Redirect to={'/profile'}/> :
-                    (<div>
-                        Login
-                    </div>)
-            }
-        </>
+        <div>
+            <h1>Login</h1>
+            <LoginForm {...props}/>
+        </div>
     )
 };
 

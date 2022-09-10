@@ -2,7 +2,6 @@ import React, {FC} from 'react';
 import {UsersPropsType} from './UsersContainer';
 import User from './User/User';
 import style from './Users.module.css'
-import {usersAPI} from '../../api/api';
 
 type UsersAPIPropsType = {
     changePageNumber: (pageNumber: number) => void

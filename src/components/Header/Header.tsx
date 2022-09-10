@@ -6,9 +6,14 @@ import {NavLink} from 'react-router-dom';
 type HeaderPropsType = {
     login: string | null
     isAuth: boolean
+    logout: () => void
 }
 
-const Header: FC<HeaderPropsType> = ({isAuth, login}) => {
+const Header: FC<HeaderPropsType> = ({isAuth, login, logout}) => {
+    const logoutHandler = () => {
+        logout()
+    };
+
     return (
         <header className={style.header}>
             <img
@@ -16,7 +21,12 @@ const Header: FC<HeaderPropsType> = ({isAuth, login}) => {
                 alt="logo"
             />
             <div className={style.loginBlock}>
-                {isAuth ? login : <NavLink to={'/login'}>Login</NavLink>}
+                {isAuth
+                    ? <div>
+                        <div>{login}</div>
+                        <button onClick={logoutHandler}>Logout</button>
+                    </div>
+                    : <NavLink to={'/login'}>Login</NavLink>}
             </div>
         </header>
     );
