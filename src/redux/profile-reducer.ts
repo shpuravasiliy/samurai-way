@@ -119,7 +119,7 @@ export const getProfile = (userId: number): ThunkAction<void, AppStateType, unkn
     profileAPI.getProfile(userId)
         .then((res) => dispatch(setUserProfile(res)))
         .then(res => userId && dispatch(getUserStatus(userId)))
-        .then(res => dispatch(changeProfileEntityStatusAC('succeeded')))
+        .then(() => dispatch(changeProfileEntityStatusAC('succeeded')))
 }
 export const getUserStatus = (userId: number) => (dispatch: Dispatch<AnyAction>) => {
     profileAPI.getStatus(userId)

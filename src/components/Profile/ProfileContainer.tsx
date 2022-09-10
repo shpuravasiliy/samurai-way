@@ -55,4 +55,4 @@ const mapStateToProps = (state: AppStateType): mapStateToPropsType => {
 
 const connector = connect(mapStateToProps, {setUserProfile, getProfile, getUserStatus, updateUserStatus})
 
-export default compose<FC>(connector, withRouter, withAuthRedirect)(ProfileContainer)
+export default compose<FC>(withAuthRedirect, connector, withRouter)(ProfileContainer)

@@ -1,11 +1,21 @@
 import React from 'react';
+import {Redirect} from 'react-router-dom';
 
-const Login = () => {
+type LoginPropsType = {
+    isAuth: boolean
+}
+
+const Login = ({isAuth}: LoginPropsType) => {
     return (
-        <div>
-            Login
-        </div>
-    );
+        <>
+            {
+                isAuth ? <Redirect to={'/profile'}/> :
+                    (<div>
+                        Login
+                    </div>)
+            }
+        </>
+    )
 };
 
 export default Login;

@@ -11,17 +11,6 @@ type RootReducerType = typeof reducers;
 
 export type AppStateType = ReturnType<RootReducerType>
 
-// declare global {
-//     interface Window {
-//         __REDUX_DEVTOOLS_EXTENSION_COMPOSE__?: typeof compose;
-//     }
-// }
-// ({ actionCreators, serialize: true, trace: true })
-// const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
-//
-// const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ &&
-//     window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__({ trace: true, traceLimit: 25 }) || compose;
-
 const composeEnhancers = composeWithDevTools({ trace: true, traceLimit: 25});
 
 const reducers = combineReducers({

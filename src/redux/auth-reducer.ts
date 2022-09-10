@@ -1,12 +1,15 @@
-import {Dispatch} from 'redux';
+import {AnyAction} from 'redux';
 import {authAPI} from '../api/api';
-import {getProfile} from './profile-reducer';
+import {changeProfileEntityStatusAC, getProfile, RequestStatusType} from './profile-reducer';
+import {ThunkDispatch} from 'redux-thunk';
+import {AppStateType} from './redux-store';
 
 export type initialStateType = {
     id: number | null,
     login: string | null
     email: string | null
     isAuth: boolean
+    entityStatus: RequestStatusType
 }
 
 const initialState: initialStateType = {
@@ -14,11 +17,13 @@ const initialState: initialStateType = {
     login: null,
     email: null,
     isAuth: false,
+    entityStatus: 'idle',
 }
 
 export type setAuthUserDataACType = ReturnType<typeof setAuthUserData>
+export type changeAuthEntityStatusACType = ReturnType<typeof changeAuthEntityStatus>
 
-type ActionsType = setAuthUserDataACType
+type ActionsType = setAuthUserDataACType | changeAuthEntityStatusACType
 
 export const setAuthUserData = ({id, email, login}: initialStateType) => {
     return {
@@ -28,14 +33,26 @@ export const setAuthUserData = ({id, email, login}: initialStateType) => {
         }
     } as const
 }
+export const changeAuthEntityStatus = (entityStatus: RequestStatusType) => {
+    return {
+        type: 'CHANGE-AUTH-ENTITY-STATUS',
+        payload: {entityStatus}
+    } as const
+}
 
-export const getAuthStatus = () => (dispatch: Dispatch) => {
+export const getAuthStatus = () => (dispatch: ThunkDispatch<AppStateType, unknown, AnyAction>) => {
+    dispatch(changeAuthEntityStatus('loading'))
     authAPI.getAuthStatus()
         .then((res) => {
-            res.resultCode === 0 ? dispatch(setAuthUserData(res.data)) : new Error('You not login yet');
-            res.data.id &&
-            getProfile(res.data.id)
+            if (res.resultCode === 0) {
+                dispatch(setAuthUserData(res.data))
+                dispatch(changeAuthEntityStatus('succeeded'))
+            } else {
+                new Error('You not login yet')
+            }
+            return res.data.id
         })
+        .then((res) => res && dispatch(getProfile(res)))
 }
 
 const authReducer = (state: initialStateType = initialState, action: ActionsType): initialStateType => {
@@ -45,6 +62,12 @@ const authReducer = (state: initialStateType = initialState, action: ActionsType
                 ...state,
                 ...action.payload,
                 isAuth: true,
+            };
+        }
+        case 'CHANGE-AUTH-ENTITY-STATUS': {
+            return {
+                ...state,
+                entityStatus: action.payload.entityStatus,
             };
         }
         default:

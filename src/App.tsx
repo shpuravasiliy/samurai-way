@@ -1,6 +1,6 @@
 import React from 'react';
 import './App.css';
-import {BrowserRouter, Route} from 'react-router-dom';
+import {Route} from 'react-router-dom';
 import News from './components/News/News';
 import Music from './components/Music/Music';
 import Settings from './components/Settings/Settings';
@@ -9,7 +9,7 @@ import UsersContainer from './components/Users/UsersContainer';
 import ProfileContainer from './components/Profile/ProfileContainer';
 import HeaderContainer from './components/Header/HeaderContainer';
 import NavbarContainer from './components/Navbar/NavbarContainer';
-import Login from './components/Login/Login';
+import LoginContainer from './components/Login/LoginContainer';
 
 const App = () => {
     const dialogs = () => <DialogsContainer/>;
@@ -18,10 +18,9 @@ const App = () => {
     const news = () => <News/>;
     const music = () => <Music/>;
     const settings = () => <Settings/>;
-    const login = () => <Login/>;
+    const login = () => <LoginContainer/>;
 
     return (
-        <BrowserRouter>
             <div className="placeholder">
                 <div className="app-wrapper">
                     <HeaderContainer/>
@@ -37,7 +36,6 @@ const App = () => {
                     </div>
                 </div>
             </div>
-        </BrowserRouter>
     );
 }
 
